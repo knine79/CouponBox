@@ -1,0 +1,22 @@
+{
+  "images" : [
+    {
+      "filename" : "CouponBox appIcon 512.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "스크린샷 2023-10-18 오후 5.29.09.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
