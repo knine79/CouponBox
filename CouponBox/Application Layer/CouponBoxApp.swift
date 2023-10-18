@@ -43,31 +43,15 @@ struct CouponBoxApp: App {
                 
             case .active:
                 couponExpirationNotificationUseCase.requestNotificationAuthorizationIfNeeded()
-//                cancelAllBackgroundTasks()
-//                couponExpirationNotificationUseCase.cancelAllScheduledNotifications()
             default: break
             }
             UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { printLog($0.map { $0.identifier}) })
         }
-//        .backgroundTask(.appRefresh("com.samuel.CouponBox.notification.add")) {
-//            doBackgroundTask()
-//        }
     }
     
     private func rescheduleUpcomingExpirationNotifications() {
         couponExpirationNotificationUseCase.cancelAllScheduledNotifications()
         useCaseFactory.createCouponListUseCase().fetchCouponList()
-//        UserNotificationCenter().scheduleNotification(title: "테스트", body: "백그라운드 태스크 실행됨", at: .now.addingTimeInterval(1))
         couponExpirationNotificationUseCase.scheduleUpcomingExpirationNotifications()
     }
-    
-//    private func scheduleNextBackgroundTask() {
-//        let request = BGAppRefreshTaskRequest(identifier: "com.samuel.CouponBox.notification.add")
-//        request.earliestBeginDate = Date(timeIntervalSinceNow: 6 * 3600)
-//        try? BGTaskScheduler.shared.submit(request)
-//    }
-//    
-//    private func cancelAllBackgroundTasks() {
-//        BGTaskScheduler.shared.cancelAllTaskRequests()
-//    }
 }
