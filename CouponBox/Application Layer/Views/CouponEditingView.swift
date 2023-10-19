@@ -32,6 +32,7 @@ struct CouponEditingView: View {
             }
             .scrollIndicators(.hidden, axes: .vertical)
             .padding(.horizontal, 24)
+            .toolbarBackground(Color.background, for: .automatic)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("취소".locaized) {
@@ -110,7 +111,7 @@ struct CouponEditingView: View {
                             .frame(width: 60, alignment: .leading)
                     }
                 }
-                .environment(\.locale, locale)
+                .environment(\.locale, .preferred)
                 HStack(spacing: 0) {
                     Text("\(viewModel.expiresAt.relativeTime) 만료".locaized)
                     Spacer()
@@ -126,16 +127,6 @@ struct CouponEditingView: View {
             }
         }
     }
-    
-    private let locale: Locale = {
-        Locale(identifier: Locale.preferredLanguages.first!)
-    }()
-    
-    private let calendar: Calendar = {
-        var calendar = Calendar.current
-        calendar.locale = Locale(identifier: Locale.preferredLanguages.first!)
-        return calendar
-    }()
 }
 
 #Preview {

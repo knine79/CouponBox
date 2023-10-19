@@ -33,8 +33,13 @@
 		E97DE0222AD8DFC900D0387D /* RepositoryContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97DE0212AD8DFC900D0387D /* RepositoryContainer.swift */; };
 		E97DE0242AD8E14A00D0387D /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E97DE0232AD8E14A00D0387D /* ViewFactory.swift */; };
 		E9F007212ADFD79900D18364 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9F007202ADFD79900D18364 /* Launch Screen.storyboard */; };
-		E9F007232ADFF56B00D18364 /* ApplicationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F007222ADFF56B00D18364 /* ApplicationProtocol.swift */; };
-		E9F007252ADFF5DD00D18364 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F007242ADFF5DD00D18364 /* Application.swift */; };
+		E9F007272AE0B93200D18364 /* ScreenBrightnessUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F007262AE0B93200D18364 /* ScreenBrightnessUseCase.swift */; };
+		E9F007292AE0BB2300D18364 /* ScreenControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F007282AE0BB2300D18364 /* ScreenControllerProtocol.swift */; };
+		E9F0072B2AE0BC2F00D18364 /* ScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0072A2AE0BC2F00D18364 /* ScreenController.swift */; };
+		E9F0072D2AE0C10500D18364 /* CouponVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0072C2AE0C10500D18364 /* CouponVO.swift */; };
+		E9F0072F2AE0C94700D18364 /* Locale+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0072E2AE0C94700D18364 /* Locale+Extension.swift */; };
+		E9F007312AE0E3C200D18364 /* Stubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F007302AE0E3C200D18364 /* Stubs.swift */; };
+		E9F007332AE11F2800D18364 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E9F007322AE11F2800D18364 /* README.md */; };
 		E9FFFA782ADD143F00539DE8 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FFFA772ADD143F00539DE8 /* Log.swift */; };
 		E9FFFA7A2ADD149600539DE8 /* SwiftUI+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FFFA792ADD149600539DE8 /* SwiftUI+Debug.swift */; };
 		E9FFFA7D2ADE25C000539DE8 /* CouponExpirationNotificationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FFFA7C2ADE25C000539DE8 /* CouponExpirationNotificationUseCase.swift */; };
@@ -70,8 +75,13 @@
 		E97DE0212AD8DFC900D0387D /* RepositoryContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryContainer.swift; sourceTree = "<group>"; };
 		E97DE0232AD8E14A00D0387D /* ViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		E9F007202ADFD79900D18364 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		E9F007222ADFF56B00D18364 /* ApplicationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationProtocol.swift; sourceTree = "<group>"; };
-		E9F007242ADFF5DD00D18364 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
+		E9F007262AE0B93200D18364 /* ScreenBrightnessUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenBrightnessUseCase.swift; sourceTree = "<group>"; };
+		E9F007282AE0BB2300D18364 /* ScreenControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenControllerProtocol.swift; sourceTree = "<group>"; };
+		E9F0072A2AE0BC2F00D18364 /* ScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenController.swift; sourceTree = "<group>"; };
+		E9F0072C2AE0C10500D18364 /* CouponVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponVO.swift; sourceTree = "<group>"; };
+		E9F0072E2AE0C94700D18364 /* Locale+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+Extension.swift"; sourceTree = "<group>"; };
+		E9F007302AE0E3C200D18364 /* Stubs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stubs.swift; sourceTree = "<group>"; };
+		E9F007322AE11F2800D18364 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E9FFFA772ADD143F00539DE8 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		E9FFFA792ADD149600539DE8 /* SwiftUI+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Debug.swift"; sourceTree = "<group>"; };
 		E9FFFA7B2ADE1DC700539DE8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -118,6 +128,7 @@
 				E90D07422AD53EB3003525DC /* String+Extension.swift */,
 				E96FBE3C2AD7E4C600D4FEE0 /* Date+Extension.swift */,
 				E96FBE412AD7F11000D4FEE0 /* Data+Extension.swift */,
+				E9F0072E2AE0C94700D18364 /* Locale+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -129,9 +140,9 @@
 				E9501D962ACFB58C00D342E7 /* Views */,
 				E90D07512AD67CD1003525DC /* Repositories */,
 				E90D07412AD53E97003525DC /* Extensions */,
-				E9F007242ADFF5DD00D18364 /* Application.swift */,
 				E9FFFA802ADE623500539DE8 /* UserNotificationCenter.swift */,
 				E96FBE432AD7F33B00D4FEE0 /* ImageAnalyzer.swift */,
+				E9F0072A2AE0BC2F00D18364 /* ScreenController.swift */,
 			);
 			path = "Application Layer";
 			sourceTree = "<group>";
@@ -140,7 +151,6 @@
 			isa = PBXGroup;
 			children = (
 				E90D074F2AD67C94003525DC /* CouponListRepository.swift */,
-				E96FBE382AD7C1C600D4FEE0 /* FakeCouponListRepository.swift */,
 				E97DE0212AD8DFC900D0387D /* RepositoryContainer.swift */,
 			);
 			path = Repositories;
@@ -149,6 +159,7 @@
 		E9501D792ACFB51500D342E7 = {
 			isa = PBXGroup;
 			children = (
+				E9F007322AE11F2800D18364 /* README.md */,
 				E9501D842ACFB51500D342E7 /* CouponBox */,
 				E9501D832ACFB51500D342E7 /* Products */,
 			);
@@ -179,7 +190,9 @@
 		E9501D8B2ACFB51600D342E7 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				E96FBE382AD7C1C600D4FEE0 /* FakeCouponListRepository.swift */,
 				E9501D8C2ACFB51600D342E7 /* Preview Assets.xcassets */,
+				E9F007302AE0E3C200D18364 /* Stubs.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -189,6 +202,7 @@
 			children = (
 				E9501D932ACFB57900D342E7 /* CouponEditingViewModel.swift */,
 				E90D073F2AD4EB01003525DC /* CouponListViewModel.swift */,
+				E9F0072C2AE0C10500D18364 /* CouponVO.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -211,7 +225,7 @@
 				E96FBE3F2AD7E95A00D4FEE0 /* DataStorable.swift */,
 				E97DE01B2AD8DC1200D0387D /* ImageAnalyzable.swift */,
 				E9FFFA7E2ADE617100539DE8 /* UserNotificationCenterProtocol.swift */,
-				E9F007222ADFF56B00D18364 /* ApplicationProtocol.swift */,
+				E9F007282AE0BB2300D18364 /* ScreenControllerProtocol.swift */,
 			);
 			path = AbstractedApplication;
 			sourceTree = "<group>";
@@ -231,6 +245,7 @@
 				E90D073A2ACFDCEC003525DC /* CouponListUseCase.swift */,
 				E96FBE3A2AD7E3BD00D4FEE0 /* CouponEditingUseCase.swift */,
 				E9FFFA7C2ADE25C000539DE8 /* CouponExpirationNotificationUseCase.swift */,
+				E9F007262AE0B93200D18364 /* ScreenBrightnessUseCase.swift */,
 				E97DE01D2AD8DC9000D0387D /* UseCaseFactory.swift */,
 			);
 			path = UseCases;
@@ -296,6 +311,7 @@
 			files = (
 				E9F007212ADFD79900D18364 /* Launch Screen.storyboard in Resources */,
 				E9501D8D2ACFB51600D342E7 /* Preview Assets.xcassets in Resources */,
+				E9F007332AE11F2800D18364 /* README.md in Resources */,
 				E9501D8A2ACFB51600D342E7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,12 +323,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9F007252ADFF5DD00D18364 /* Application.swift in Sources */,
 				E96FBE392AD7C1C600D4FEE0 /* FakeCouponListRepository.swift in Sources */,
 				E9FFFA812ADE623500539DE8 /* UserNotificationCenter.swift in Sources */,
 				E90D07402AD4EB01003525DC /* CouponListViewModel.swift in Sources */,
 				E97DE01C2AD8DC1200D0387D /* ImageAnalyzable.swift in Sources */,
-				E9F007232ADFF56B00D18364 /* ApplicationProtocol.swift in Sources */,
 				E96FBE402AD7E95A00D4FEE0 /* DataStorable.swift in Sources */,
 				E90D07432AD53EB4003525DC /* String+Extension.swift in Sources */,
 				E96FBE372AD7AA9500D4FEE0 /* CouponDetail.swift in Sources */,
@@ -322,6 +336,9 @@
 				E90D07502AD67C94003525DC /* CouponListRepository.swift in Sources */,
 				E96FBE3D2AD7E4C600D4FEE0 /* Date+Extension.swift in Sources */,
 				E97DE0202AD8DD8700D0387D /* RepositoryContainerProtocol.swift in Sources */,
+				E9F0072F2AE0C94700D18364 /* Locale+Extension.swift in Sources */,
+				E9F007292AE0BB2300D18364 /* ScreenControllerProtocol.swift in Sources */,
+				E9F0072D2AE0C10500D18364 /* CouponVO.swift in Sources */,
 				E90D073E2ACFDE20003525DC /* CouponEditingView.swift in Sources */,
 				E9501D9A2ACFC01800D342E7 /* SwiftUI+Extension.swift in Sources */,
 				E97DE0222AD8DFC900D0387D /* RepositoryContainer.swift in Sources */,
@@ -329,6 +346,8 @@
 				E9501D882ACFB51500D342E7 /* CouponListView.swift in Sources */,
 				E9FFFA7A2ADD149600539DE8 /* SwiftUI+Debug.swift in Sources */,
 				E96FBE442AD7F33B00D4FEE0 /* ImageAnalyzer.swift in Sources */,
+				E9F007312AE0E3C200D18364 /* Stubs.swift in Sources */,
+				E9F007272AE0B93200D18364 /* ScreenBrightnessUseCase.swift in Sources */,
 				E90D073B2ACFDCEC003525DC /* CouponListUseCase.swift in Sources */,
 				E90D074D2AD67B89003525DC /* CouponListRepositoryProtocol.swift in Sources */,
 				E96FBE3B2AD7E3BD00D4FEE0 /* CouponEditingUseCase.swift in Sources */,
@@ -337,6 +356,7 @@
 				E90D07492AD67166003525DC /* Model.xcdatamodeld in Sources */,
 				E97DE01E2AD8DC9000D0387D /* UseCaseFactory.swift in Sources */,
 				E9501D862ACFB51500D342E7 /* CouponBoxApp.swift in Sources */,
+				E9F0072B2AE0BC2F00D18364 /* ScreenController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

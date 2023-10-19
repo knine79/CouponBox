@@ -17,7 +17,7 @@ public protocol CouponListControllable {
     func removeCoupon(code: String)
 }
 
-public class CouponListUseCase: CouponListPresentable, CouponListControllable {
+public final class CouponListUseCase: CouponListPresentable, CouponListControllable {
     private let repository: CouponListRepositoryProtocol
     private let store: DataStorable
     
@@ -35,7 +35,7 @@ public class CouponListUseCase: CouponListPresentable, CouponListControllable {
         guard Thread.isMainThread else { return }
         store.valuePublisher(key: .couponList, typeOf: [CouponRepositoryItem].self)
             .sink { [weak self] coupons in
-                self?.viewModel.coupons = coupons ?? []
+                self?.viewModel.coupons = coupons?.map { CouponVO(couponRepositoryItem: $0) } ?? []
                 self?.viewModel.loading = false
             }.store(in: &cancellables)
     }

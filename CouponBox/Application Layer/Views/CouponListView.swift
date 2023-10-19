@@ -36,6 +36,7 @@ struct CouponListView: View {
                 }
                 .background(Color.background)
                 .navigationTitle("내 쿠폰".locaized)
+                .toolbarBackground(Color.background, for: .automatic)
                 .toolbar(content: {
                     ToolbarItem(placement: .topBarTrailing) {
                         PhotosPicker(selection: $selectedItem, matching: .any(of: [.images, .not(.livePhotos)])) {
@@ -43,8 +44,8 @@ struct CouponListView: View {
                         }
                     }
                 })
-                .navigationDestination(for: CouponRepositoryItem.self) { coupon in
-                    CouponDetailView(coupon: coupon)
+                .navigationDestination(for: CouponVO.self) { coupon in
+                    viewFactory.createCouponDetailView(coupon: coupon)
                         .navigationBarTitleDisplayMode(.inline)
                 }
                 .onChange(of: selectedItem) { _, newValue in
@@ -124,13 +125,15 @@ struct CouponListView: View {
                             HStack {
                                 Text("유효기간".locaized)
                                 Text(coupon.expiresAt, style: .date)
+                                    .environment(\.locale, .preferred)
+                                Text("(\(coupon.expiresAt.relativeTime))")
+                                    .environment(\.locale, .preferred)
                             }
                             .foregroundStyle(coupon.expiresAt.expiredOrExpiresIn(days: 7) ? Color.red : Color.gray)
                             .font(.caption)
                         }
                     }
                 }
-                .listRowBackground(Color.background)
             }
             .onDelete(perform: { indexSet in
                 indexSet.forEach {
@@ -144,10 +147,11 @@ struct CouponListView: View {
 
 #Preview {
     let useCase = CouponListUseCase(repository: FakeCouponListRepository(coupons: [
-        CouponRepositoryItem(name: "[스타벅스] 아이스 아메리카노", expiresAt: Date(), code: "123323456122", imageData: UIImage(named: "sample")?.pngData() ?? Data()),
-        CouponRepositoryItem(name: "[스타벅스] 아메리카노", expiresAt: Date(), code: "900369921874", imageData: UIImage(named: "sample3")?.pngData() ?? Data())
+        CouponRepositoryItem(name: "[스타벅스] 아이스 아메리카노", expiresAt: .today.addingTimeInterval(7*24*3600), code: "123323456122", imageData: UIImage(named: "sample")?.pngData() ?? Data()),
+        CouponRepositoryItem(name: "[스타벅스] 아메리카노", expiresAt: .today, code: "900369921874", imageData: UIImage(named: "sample3")?.pngData() ?? Data())
     ]), store: DataStore())
     return CouponListView(presenter: useCase, controller: useCase)
+        .environmentObject(Stubs.viewFactory)
 }
 
 #Preview {

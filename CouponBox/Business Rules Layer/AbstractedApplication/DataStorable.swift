@@ -10,10 +10,11 @@ import Combine
 
 public enum StoreKey: String {
     case couponList
+    case legacyScreenBrightness
 }
 
 public protocol DataStorable: AnyObject {
-    func value<T>(key: StoreKey) -> T?
+    func value<T>(key: StoreKey, typeOf: T.Type) -> T?
     func value<T>(key: StoreKey, defaultValue: T) -> T
     func valuePublisher<T>(key: StoreKey, typeOf: T.Type) -> AnyPublisher<T?, Never>
     func update(key: StoreKey, value: Any?)
@@ -28,7 +29,7 @@ final class DataStore: DataStorable {
         self.serialQueue = serialQueue
     }
     
-    func value<T>(key: StoreKey) -> T? {
+    func value<T>(key: StoreKey, typeOf: T.Type) -> T? {
         storeMap.value[key] as? T
     }
     

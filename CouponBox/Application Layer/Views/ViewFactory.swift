@@ -18,6 +18,16 @@ final class ViewFactory: ObservableObject {
         self.dependencies = dependencies
     }
     
+    func createCouponListView() -> CouponListView {
+        let useCase = dependencies.useCaseFactory.createCouponListUseCase()
+        return CouponListView(presenter: useCase, controller: useCase)
+    }
+    
+    func createCouponDetailView(coupon: CouponVO) -> CouponDetailView {
+        let useCase = dependencies.useCaseFactory.createScreenBrightnessUseCase()
+        return CouponDetailView(coupon: coupon, screenBrightnessController: useCase)
+    }
+    
     func createCouponEditingView(couponImageData: Data) -> CouponEditingView {
         let useCase = dependencies.useCaseFactory.createCouponEditingUseCase(couponImageData: couponImageData)
         return CouponEditingView(presenter: useCase, controller: useCase)
@@ -26,10 +36,5 @@ final class ViewFactory: ObservableObject {
     func createCouponEditingView(couponCode: String) -> CouponEditingView {
         let useCase = dependencies.useCaseFactory.createCouponEditingUseCase(couponCode: couponCode)
         return CouponEditingView(presenter: useCase, controller: useCase)
-    }
-    
-    func createCouponListView() -> CouponListView {
-        let useCase = dependencies.useCaseFactory.createCouponListUseCase()
-        return CouponListView(presenter: useCase, controller: useCase)
     }
 }

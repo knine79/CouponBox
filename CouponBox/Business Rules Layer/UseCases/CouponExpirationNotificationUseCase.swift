@@ -10,12 +10,10 @@ import Foundation
 final class CouponExpirationNotificationUseCase {
     private let store: DataStorable
     private let userNotificationCenter: UserNotificationCenterProtocol
-    private let application: ApplicationProtocol
     
-    init(store: DataStorable, userNotificationCenter: UserNotificationCenterProtocol, application: ApplicationProtocol) {
+    init(store: DataStorable, userNotificationCenter: UserNotificationCenterProtocol) {
         self.store = store
         self.userNotificationCenter = userNotificationCenter
-        self.application = application
     }
     
     public func requestNotificationAuthorizationIfNeeded() {
@@ -31,7 +29,7 @@ final class CouponExpirationNotificationUseCase {
     }
     
     public func updateBadgeCount() {
-        application.setApplicationIconBadgeNumber(store.value(key: .couponList, defaultValue: [CouponRepositoryItem]()).filter { $0.expiresAt.expiresIn(days: 7) }.count)
+        userNotificationCenter.setApplicationIconBadgeNumber(store.value(key: .couponList, defaultValue: [CouponRepositoryItem]()).filter { $0.expiresAt.expiresIn(days: 7) }.count)
     }
     
     public func cancelAllScheduledNotifications() {

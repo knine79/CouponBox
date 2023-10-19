@@ -9,10 +9,7 @@ import Foundation
 
 public func printLog(_ items: Any, file: String = #file, line: Int = #line) {
     #if DEBUG
-    let formatter = DateFormatter()
-    formatter.locale = NSLocale.current
-    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
     let filename = String(file.split(separator: "/").last ?? "")
-    NSLog("\(formatter.string(from: Date())) \(filename):\(line) 👉 \(items)")
+    NSLog("\(filename):\(line) 👉 \(items)")
     #endif
 }

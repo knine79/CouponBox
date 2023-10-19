@@ -17,7 +17,7 @@ public protocol CouponEditingControllable {
     func saveCoupon()
 }
 
-public class CouponEditingUseCase: CouponEditingPresentable, CouponEditingControllable {
+public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditingControllable {
     enum EditingMode {
         case add, update
     }

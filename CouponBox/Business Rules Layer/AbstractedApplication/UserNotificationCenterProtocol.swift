@@ -11,4 +11,5 @@ public protocol UserNotificationCenterProtocol {
     func requestAuthorizationIfNeeded()
     func scheduleNotification(title: String, body: String, at: Date?)
     func cancelAllNotifications()
+    func setApplicationIconBadgeNumber(_ value: Int)
 }

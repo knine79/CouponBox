@@ -12,7 +12,7 @@ struct UseCaseFactoryDependencies {
     let store: DataStorable
     let imageAnalyzer: ImageAnalyzable
     let userNotificationCenter: UserNotificationCenterProtocol
-    let application: ApplicationProtocol
+    let screenController: ScreenControllerProtocol
 }
 
 final class UseCaseFactory {
@@ -23,6 +23,10 @@ final class UseCaseFactory {
     
     func createCouponListUseCase() -> CouponListUseCase {
         CouponListUseCase(repository: dependencies.repositoryContainer.couponList, store: dependencies.store)
+    }
+    
+    func createScreenBrightnessUseCase() -> ScreenBrightnessUseCase {
+        ScreenBrightnessUseCase(store: dependencies.store, screenController: dependencies.screenController)
     }
     
     func createCouponEditingUseCase(couponImageData: Data) -> CouponEditingUseCase {
@@ -44,6 +48,6 @@ final class UseCaseFactory {
     }
     
     func createCouponExpirationNotificationUseCase() -> CouponExpirationNotificationUseCase {
-        CouponExpirationNotificationUseCase(store: dependencies.store, userNotificationCenter: dependencies.userNotificationCenter, application: dependencies.application)
+        CouponExpirationNotificationUseCase(store: dependencies.store, userNotificationCenter: dependencies.userNotificationCenter)
     }
 }

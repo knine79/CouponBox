@@ -42,4 +42,8 @@ final class UserNotificationCenter: UserNotificationCenterProtocol {
     func cancelAllNotifications() {
         center.removeAllPendingNotificationRequests()
     }
+    
+    func setApplicationIconBadgeNumber(_ value: Int) {
+        center.setBadgeCount(value)
+    }
 }

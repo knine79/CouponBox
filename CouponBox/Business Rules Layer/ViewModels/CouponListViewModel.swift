@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class CouponListViewModel: ObservableObject {
-    @Published var coupons: [CouponRepositoryItem] = []
+public final class CouponListViewModel: ObservableObject {
+    @Published var coupons: [CouponVO] = []
     @Published var loading = false
 }

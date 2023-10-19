@@ -18,9 +18,9 @@ struct CouponBoxApp: App {
             store: DataStore(),
             imageAnalyzer: ImageAnalyzer(),
             userNotificationCenter: UserNotificationCenter(),
-            application: Application()
+            screenController: ScreenController()
         )
-    
+        
         return UseCaseFactory(dependencies: useCaseFactoryDependencies)
     }()
     

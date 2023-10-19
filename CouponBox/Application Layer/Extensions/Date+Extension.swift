@@ -10,9 +10,16 @@ import Foundation
 extension Date {
     var relativeTime: String {
         let formatter = RelativeDateTimeFormatter()
-        formatter.dateTimeStyle = .numeric
-        formatter.locale = Locale(identifier: Locale.preferredLanguages.first!)
-        return formatter.localizedString(for: self, relativeTo: Date())
+        formatter.dateTimeStyle = .named
+        formatter.locale = Locale.preferred
+        
+        return formatter.localizedString(for: self.addingTimeInterval(24*3600), relativeTo: Date())
+    }
+    
+    static var today: Date {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: Date())
+        return calendar.date(from: components)!
     }
     
     func expiresIn(days: Int) -> Bool {

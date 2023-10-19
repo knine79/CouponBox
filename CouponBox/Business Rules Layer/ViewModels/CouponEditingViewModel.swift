@@ -7,12 +7,13 @@
 
 import Foundation
 
-public class CouponEditingViewModel: ObservableObject {
+public final class CouponEditingViewModel: ObservableObject {
     @Published var imageData: Data?
     @Published var name: String = ""
-    @Published var nameCandidates: [String] = []
     @Published var expiresAt: Date = .init()
     @Published var barcode: String = ""
+    
+    @Published var nameCandidates: [String] = []
     @Published var loading: Bool = false
     @Published var canDone: Bool = false
     
