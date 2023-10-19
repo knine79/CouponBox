@@ -1,20 +1,18 @@
 # CouponBox
 
-This is my toy project to satisfing my desire. The applications about coupon(or gifticon) on the App Store are very annoying and commercial. They are recommnding some new coupons everyday.
-But CouponBox is a very simple application that manages a list of coupons I already have. The imformations are stored only in local storage.
-And I don't like to type all the informations of coupon, like product name, expiration date, etc. CouponBox automatically recognize these informations using computer vision.
-And CouponBox notifies you of the coupon expiration date, so you don't have to miss out on using the coupon in the future.
+이 프로젝트는 개인적인 필요로 시작한 토이 프로젝트입니다. 보통 앱스토어에 있는 쿠폰(또는 기프티콘) 관련 앱들은 매우 상업적인 경우가 많고 정보를 일일이 입력해야 해서 너무 귀찮습니다. CouponBox는 내가 이미 가지고 있는 쿠폰만 관리하는 매우 간단한 앱입니다. 쿠폰 정보는 로컬 저장소에만 저장됩니다. 그리고 상품 이름, 유효 기간 등과 같은 쿠폰의 모든 정보는 컴퓨터 비전을 사용하여 자동으로 인식됩니다. 그리고 쿠폰 만료일을 알려주기 때문에 쿠폰 사용 시기를 놓칠 염려가 줄여줍니다.
 
-The application architecture is intended to follow Robert C. Martin's Clean Architecture.
+앱 아키텍처는 로버트 C. 마틴의 클린 아키텍처를 따르려고 했습니다.
 
 ## Implemented features
-* You can show a list of coupons.
-* Automatically recognize text, expiration date, and barcode number from images that contain a barcode and add them to your coupon list.
-* Shows the coupon image and allows you to edit the coupon data details.
-* Provide push notifications on expiration date, 3 days before expiration, and 7 days before expiration.
-* The app badge shows how many coupons are within 7 days of expiration.
+- 쿠폰 목록을 표시할 수 있습니다.
+- 바코드가 포함된 이미지에서 텍스트, 유효기간, 바코드 번호를 자동으로 인식하여 쿠폰 목록에 추가할 수 있습니다.
+- 저장된 쿠폰 이미지를 보여주고 쿠폰 데이터 세부 정보를 편집할 수 있습니다.
+- 만료 7일 전, 3일 전, 그리고 당일에 푸시 알림을 제공합니다.
+- 7일 이내 만료되는 쿠폰이 몇 개 있는지 앱 배지에 표시합니다.
 
 ## Features to implement
-* Maximize screen brightness when a coupon image is displayed for scanning.
-* The widget shows the coupon images in order of closest expiration date.
-* Make soon-to-expire coupons more visible
+- 스캔을 위해 쿠폰 이미지가 표시될 때 화면 밝기 최대화하기
+- 위젯을 이용하여 쿠폰 이미지 보여주기
+- 곧 만료되는 쿠폰을 더 잘 보이게 만들기
+- 알림이 오는 시간을 사용자가 결정할 수 있게 하기
