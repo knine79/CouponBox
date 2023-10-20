@@ -1,0 +1,500 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E9F008622AE213C000D18364 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9F008612AE213C000D18364 /* Assets.xcassets */; };
+		E9F008672AE213C000D18364 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F008662AE213C000D18364 /* Persistence.swift */; };
+		E9F0086A2AE213C000D18364 /* CouponBox.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E9F008682AE213C000D18364 /* CouponBox.xcdatamodeld */; };
+		E9F008752AE2142100D18364 /* CouponBoxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F008742AE2142100D18364 /* CouponBoxApp.swift */; };
+		E9F008902AE214D300D18364 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E9F008782AE214D300D18364 /* Launch Screen.storyboard */; };
+		E9F008912AE214D300D18364 /* SwiftUI+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0087A2AE214D300D18364 /* SwiftUI+Debug.swift */; };
+		E9F008922AE214D300D18364 /* SwiftUI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0087B2AE214D300D18364 /* SwiftUI+Extension.swift */; };
+		E9F008932AE214D300D18364 /* FakeCouponListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0087D2AE214D300D18364 /* FakeCouponListRepository.swift */; };
+		E9F008942AE214D300D18364 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E9F0087E2AE214D300D18364 /* Preview Assets.xcassets */; };
+		E9F008952AE214D300D18364 /* Stubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0087F2AE214D300D18364 /* Stubs.swift */; };
+		E9F008962AE214D300D18364 /* ImageAnalyzer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F008812AE214D300D18364 /* ImageAnalyzer.swift */; };
+		E9F008972AE214D300D18364 /* UserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F008822AE214D300D18364 /* UserNotificationCenter.swift */; };
+		E9F008982AE214D300D18364 /* ScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F008832AE214D300D18364 /* ScreenController.swift */; };
+		E9F0089A2AE214D300D18364 /* CouponListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F008862AE214D300D18364 /* CouponListView.swift */; };
+		E9F0089B2AE214D300D18364 /* CouponEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F008872AE214D300D18364 /* CouponEditingView.swift */; };
+		E9F0089C2AE214D300D18364 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F008882AE214D300D18364 /* ViewFactory.swift */; };
+		E9F0089D2AE214D300D18364 /* CouponDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F008892AE214D300D18364 /* CouponDetail.swift */; };
+		E9F0089E2AE214D300D18364 /* CouponListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0088B2AE214D300D18364 /* CouponListRepository.swift */; };
+		E9F0089F2AE214D300D18364 /* RepositoryContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F0088C2AE214D300D18364 /* RepositoryContainer.swift */; };
+		E9F008A32AE2168E00D18364 /* CouponBox_BusinessRules.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9F008A22AE2168E00D18364 /* CouponBox_BusinessRules.framework */; };
+		E9F008A42AE2168E00D18364 /* CouponBox_BusinessRules.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E9F008A22AE2168E00D18364 /* CouponBox_BusinessRules.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E9F008A52AE2168F00D18364 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E9F008A42AE2168E00D18364 /* CouponBox_BusinessRules.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		E9F0085A2AE213BF00D18364 /* CouponBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CouponBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9F008612AE213C000D18364 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E9F008662AE213C000D18364 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		E9F008692AE213C000D18364 /* CouponBox.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CouponBox.xcdatamodel; sourceTree = "<group>"; };
+		E9F0086B2AE213C000D18364 /* CouponBox.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CouponBox.entitlements; sourceTree = "<group>"; };
+		E9F0086C2AE213C000D18364 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E9F008742AE2142100D18364 /* CouponBoxApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponBoxApp.swift; sourceTree = "<group>"; };
+		E9F008782AE214D300D18364 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		E9F0087A2AE214D300D18364 /* SwiftUI+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Debug.swift"; sourceTree = "<group>"; };
+		E9F0087B2AE214D300D18364 /* SwiftUI+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extension.swift"; sourceTree = "<group>"; };
+		E9F0087D2AE214D300D18364 /* FakeCouponListRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeCouponListRepository.swift; sourceTree = "<group>"; };
+		E9F0087E2AE214D300D18364 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		E9F0087F2AE214D300D18364 /* Stubs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stubs.swift; sourceTree = "<group>"; };
+		E9F008812AE214D300D18364 /* ImageAnalyzer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAnalyzer.swift; sourceTree = "<group>"; };
+		E9F008822AE214D300D18364 /* UserNotificationCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserNotificationCenter.swift; sourceTree = "<group>"; };
+		E9F008832AE214D300D18364 /* ScreenController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenController.swift; sourceTree = "<group>"; };
+		E9F008862AE214D300D18364 /* CouponListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponListView.swift; sourceTree = "<group>"; };
+		E9F008872AE214D300D18364 /* CouponEditingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponEditingView.swift; sourceTree = "<group>"; };
+		E9F008882AE214D300D18364 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
+		E9F008892AE214D300D18364 /* CouponDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponDetail.swift; sourceTree = "<group>"; };
+		E9F0088B2AE214D300D18364 /* CouponListRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponListRepository.swift; sourceTree = "<group>"; };
+		E9F0088C2AE214D300D18364 /* RepositoryContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryContainer.swift; sourceTree = "<group>"; };
+		E9F008A22AE2168E00D18364 /* CouponBox_BusinessRules.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CouponBox_BusinessRules.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E9F008572AE213BF00D18364 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9F008A32AE2168E00D18364 /* CouponBox_BusinessRules.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E9F008512AE213BF00D18364 = {
+			isa = PBXGroup;
+			children = (
+				E9F0085C2AE213BF00D18364 /* CouponBox */,
+				E9F0085B2AE213BF00D18364 /* Products */,
+				E9F008A12AE2168E00D18364 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E9F0085B2AE213BF00D18364 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E9F0085A2AE213BF00D18364 /* CouponBox.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E9F0085C2AE213BF00D18364 /* CouponBox */ = {
+			isa = PBXGroup;
+			children = (
+				E9F008742AE2142100D18364 /* CouponBoxApp.swift */,
+				E9F008852AE214D300D18364 /* Views */,
+				E9F008792AE214D300D18364 /* Extensions */,
+				E9F008782AE214D300D18364 /* Launch Screen.storyboard */,
+				E9F0088A2AE214D300D18364 /* Repositories */,
+				E9F008802AE214D300D18364 /* Utilities */,
+				E9F008612AE213C000D18364 /* Assets.xcassets */,
+				E9F0086B2AE213C000D18364 /* CouponBox.entitlements */,
+				E9F0086C2AE213C000D18364 /* Info.plist */,
+				E9F0087C2AE214D300D18364 /* Preview Content */,
+			);
+			path = CouponBox;
+			sourceTree = "<group>";
+		};
+		E9F008792AE214D300D18364 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E9F0087A2AE214D300D18364 /* SwiftUI+Debug.swift */,
+				E9F0087B2AE214D300D18364 /* SwiftUI+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E9F0087C2AE214D300D18364 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				E9F0087D2AE214D300D18364 /* FakeCouponListRepository.swift */,
+				E9F0087E2AE214D300D18364 /* Preview Assets.xcassets */,
+				E9F0087F2AE214D300D18364 /* Stubs.swift */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		E9F008802AE214D300D18364 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				E9F008812AE214D300D18364 /* ImageAnalyzer.swift */,
+				E9F008822AE214D300D18364 /* UserNotificationCenter.swift */,
+				E9F008832AE214D300D18364 /* ScreenController.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		E9F008852AE214D300D18364 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E9F008862AE214D300D18364 /* CouponListView.swift */,
+				E9F008872AE214D300D18364 /* CouponEditingView.swift */,
+				E9F008892AE214D300D18364 /* CouponDetail.swift */,
+				E9F008882AE214D300D18364 /* ViewFactory.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E9F0088A2AE214D300D18364 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				E9F0088B2AE214D300D18364 /* CouponListRepository.swift */,
+				E9F0088C2AE214D300D18364 /* RepositoryContainer.swift */,
+				E9F008662AE213C000D18364 /* Persistence.swift */,
+				E9F008682AE213C000D18364 /* CouponBox.xcdatamodeld */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		E9F008A12AE2168E00D18364 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E9F008A22AE2168E00D18364 /* CouponBox_BusinessRules.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E9F008592AE213BF00D18364 /* CouponBox */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E9F0086F2AE213C000D18364 /* Build configuration list for PBXNativeTarget "CouponBox" */;
+			buildPhases = (
+				E9F008562AE213BF00D18364 /* Sources */,
+				E9F008572AE213BF00D18364 /* Frameworks */,
+				E9F008582AE213BF00D18364 /* Resources */,
+				E9F008A52AE2168F00D18364 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CouponBox;
+			productName = CouponBox;
+			productReference = E9F0085A2AE213BF00D18364 /* CouponBox.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E9F008522AE213BF00D18364 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					E9F008592AE213BF00D18364 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = E9F008552AE213BF00D18364 /* Build configuration list for PBXProject "CouponBox" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = E9F008512AE213BF00D18364;
+			productRefGroup = E9F0085B2AE213BF00D18364 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E9F008592AE213BF00D18364 /* CouponBox */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E9F008582AE213BF00D18364 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9F008942AE214D300D18364 /* Preview Assets.xcassets in Resources */,
+				E9F008902AE214D300D18364 /* Launch Screen.storyboard in Resources */,
+				E9F008622AE213C000D18364 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E9F008562AE213BF00D18364 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9F0089E2AE214D300D18364 /* CouponListRepository.swift in Sources */,
+				E9F008972AE214D300D18364 /* UserNotificationCenter.swift in Sources */,
+				E9F008952AE214D300D18364 /* Stubs.swift in Sources */,
+				E9F008932AE214D300D18364 /* FakeCouponListRepository.swift in Sources */,
+				E9F0089A2AE214D300D18364 /* CouponListView.swift in Sources */,
+				E9F0089D2AE214D300D18364 /* CouponDetail.swift in Sources */,
+				E9F008922AE214D300D18364 /* SwiftUI+Extension.swift in Sources */,
+				E9F008962AE214D300D18364 /* ImageAnalyzer.swift in Sources */,
+				E9F008982AE214D300D18364 /* ScreenController.swift in Sources */,
+				E9F0089F2AE214D300D18364 /* RepositoryContainer.swift in Sources */,
+				E9F0089C2AE214D300D18364 /* ViewFactory.swift in Sources */,
+				E9F008672AE213C000D18364 /* Persistence.swift in Sources */,
+				E9F0086A2AE213C000D18364 /* CouponBox.xcdatamodeld in Sources */,
+				E9F008752AE2142100D18364 /* CouponBoxApp.swift in Sources */,
+				E9F008912AE214D300D18364 /* SwiftUI+Debug.swift in Sources */,
+				E9F0089B2AE214D300D18364 /* CouponEditingView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E9F0086D2AE213C000D18364 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		E9F0086E2AE213C000D18364 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E9F008702AE213C000D18364 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CouponBox/CouponBox.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CouponBox/Preview Content\"";
+				DEVELOPMENT_TEAM = LR5334S8ZM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CouponBox/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.samuel.CouponBox;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		E9F008712AE213C000D18364 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CouponBox/CouponBox.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CouponBox/Preview Content\"";
+				DEVELOPMENT_TEAM = LR5334S8ZM;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CouponBox/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.food-and-drink";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.samuel.CouponBox;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E9F008552AE213BF00D18364 /* Build configuration list for PBXProject "CouponBox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9F0086D2AE213C000D18364 /* Debug */,
+				E9F0086E2AE213C000D18364 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E9F0086F2AE213C000D18364 /* Build configuration list for PBXNativeTarget "CouponBox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9F008702AE213C000D18364 /* Debug */,
+				E9F008712AE213C000D18364 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E9F008682AE213C000D18364 /* CouponBox.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E9F008692AE213C000D18364 /* CouponBox.xcdatamodel */,
+			);
+			currentVersion = E9F008692AE213C000D18364 /* CouponBox.xcdatamodel */;
+			path = CouponBox.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = E9F008522AE213BF00D18364 /* Project object */;
+}
