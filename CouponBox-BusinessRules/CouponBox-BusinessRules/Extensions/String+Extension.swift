@@ -12,3 +12,11 @@ extension String {
         NSLocalizedString(self, comment: "")
     }
 }
+
+extension String {
+    var detectedDate: Date? {
+        let types: NSTextCheckingResult.CheckingType = [.date]
+        let detector = try? NSDataDetector(types: types.rawValue)
+        return detector?.firstMatch(in: self, range: NSRange(location: 0, length: self.utf16.count))?.date
+    }
+}

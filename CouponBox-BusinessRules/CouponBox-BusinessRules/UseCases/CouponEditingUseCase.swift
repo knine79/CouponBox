@@ -66,7 +66,6 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
             Publishers.CombineLatest(viewModel.$expiresAt,
                                      viewModel.$imageData.removeDuplicates())
         )
-        .print()
         .sink { [weak self] _, _ in
             self?.dirty.send(true)
         }.store(in: &cancellables)
@@ -94,7 +93,7 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
                         guard let self else { return }
                         viewModel.recognizedTexts = []
                         texts.forEach { [weak self] in
-                            if (try? /(\d{4})[\.\/년]+ ?(\d{1,2})[\.\/월]+ ?(\d{1,2})[\.\/일]?/.firstMatch(in: $0)) == nil {
+                            if $0.detectedDate == nil {
                                 self?.viewModel.recognizedTexts.append($0)
                             }
                         }
@@ -149,8 +148,8 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
                     guard let self else { return }
                     viewModel.recognizedTexts = []
                     texts.forEach { [weak self] in
-                        if let match = try? /(\d{4})[\.\/년]+ ?(\d{1,2})[\.\/월]+ ?(\d{1,2})[\.\/일]?/.firstMatch(in: $0)?.output {
-                            self?.viewModel.expiresAt = DateComponents(calendar: .current, timeZone: .current, year: Int(match.1), month: Int(match.2), day: Int(match.3), hour: 23, minute: 59, second: 59).date ?? Date()
+                        if let detectedDate = $0.detectedDate {
+                            self?.viewModel.expiresAt = detectedDate.endOfDay
                         } else {
                             self?.viewModel.recognizedTexts.append($0)
                         }
