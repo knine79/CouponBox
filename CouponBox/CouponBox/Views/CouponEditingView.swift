@@ -10,12 +10,12 @@ import CouponBox_BusinessRules
 
 struct CouponEditingView: View {
     @Environment(\.presentationMode) private var presentationMode
-    @ObservedObject private var viewModel: CouponEditingViewModel
+    @StateObject private var viewModel: CouponEditingViewModel
     private let controller: CouponEditingControllable
     @State private var alertPresented = false
     
     init(presenter: CouponEditingPresentable, controller: CouponEditingControllable) {
-        self.viewModel = presenter.viewModel
+        self._viewModel = StateObject(wrappedValue: presenter.viewModel)
         self.controller = controller
     }
     
