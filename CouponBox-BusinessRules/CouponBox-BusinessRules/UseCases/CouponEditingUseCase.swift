@@ -93,7 +93,7 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
                         guard let self else { return }
                         viewModel.recognizedTexts = []
                         texts.forEach { [weak self] in
-                            if $0.detectedDate == nil {
+                            if $0.detectedDates.isEmpty {
                                 self?.viewModel.recognizedTexts.append($0)
                             }
                         }
@@ -147,13 +147,16 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
                 DispatchQueue.main.sync { [weak self] in
                     guard let self else { return }
                     viewModel.recognizedTexts = []
+                    var allDetectedDates: [Date] = []
                     texts.forEach { [weak self] in
-                        if let detectedDate = $0.detectedDate {
-                            self?.viewModel.expiresAt = detectedDate.endOfDay
-                        } else {
+                        let detectedDates = $0.detectedDates
+                        if detectedDates.isEmpty {
                             self?.viewModel.recognizedTexts.append($0)
+                        } else {
+                            allDetectedDates.append(contentsOf: detectedDates.map(\.endOfDay))
                         }
                     }
+                    viewModel.expiresAt = allDetectedDates.sorted().last!
                     viewModel.recognizedTexts = viewModel.recognizedTexts.duplicateRemoved(hasKeyProvider: { $0.hashValue })
                     viewModel.name = viewModel.recognizedTexts.dropFirst().first ?? ""
                     viewModel.shop = viewModel.recognizedTexts.first ?? ""

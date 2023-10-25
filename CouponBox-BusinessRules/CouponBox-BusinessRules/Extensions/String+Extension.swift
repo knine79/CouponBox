@@ -14,9 +14,9 @@ extension String {
 }
 
 extension String {
-    var detectedDate: Date? {
+    var detectedDates: [Date] {
         let types: NSTextCheckingResult.CheckingType = [.date]
         let detector = try? NSDataDetector(types: types.rawValue)
-        return detector?.firstMatch(in: self, range: NSRange(location: 0, length: self.utf16.count))?.date
+        return detector?.matches(in: self, range: NSRange(location: 0, length: self.utf16.count)).map(\.date) as? [Date] ?? []
     }
 }
