@@ -94,6 +94,11 @@ struct CouponEditingView: View {
                             .frame(width: 60, alignment: .leading)
                     }
                 }
+                .onChange(of: viewModel.expiresAt, { oldValue, newValue in
+                    if viewModel.expiresAt != newValue.endOfDay {
+                        viewModel.expiresAt = newValue.endOfDay
+                    }
+                })
                 .environment(\.locale, .preferred)
                 HStack(spacing: 0) {
                     Text("\(viewModel.expiresAt.relativeTime) 만료".locaized)
