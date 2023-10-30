@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E94257F72AF3944B00E077C4 /* RepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94257F62AF3944B00E077C4 /* RepositoryError.swift */; };
+		E94257F92AF3947100E077C4 /* AppSettingsRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94257F82AF3947100E077C4 /* AppSettingsRepositoryProtocol.swift */; };
 		E9E9FA422AE241F1002DB9A3 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9FA412AE241F1002DB9A3 /* Array+Extension.swift */; };
 		E9F0076F2AE1220D00D18364 /* CouponBox_BusinessRules.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9F007662AE1220D00D18364 /* CouponBox_BusinessRules.framework */; };
 		E9F007742AE1220D00D18364 /* CouponBox_BusinessRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F007732AE1220D00D18364 /* CouponBox_BusinessRulesTests.swift */; };
@@ -42,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E94257F62AF3944B00E077C4 /* RepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryError.swift; sourceTree = "<group>"; };
+		E94257F82AF3947100E077C4 /* AppSettingsRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsRepositoryProtocol.swift; sourceTree = "<group>"; };
 		E9E9FA412AE241F1002DB9A3 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		E9F007662AE1220D00D18364 /* CouponBox_BusinessRules.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CouponBox_BusinessRules.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9F007692AE1220D00D18364 /* CouponBox_BusinessRules.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CouponBox_BusinessRules.h; sourceTree = "<group>"; };
@@ -152,7 +156,9 @@
 			isa = PBXGroup;
 			children = (
 				E9F007AE2AE1230900D18364 /* CouponListRepositoryProtocol.swift */,
+				E94257F82AF3947100E077C4 /* AppSettingsRepositoryProtocol.swift */,
 				E9F007AF2AE1230900D18364 /* RepositoryContainerProtocol.swift */,
+				E94257F62AF3944B00E077C4 /* RepositoryError.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -317,10 +323,12 @@
 				E9F007C12AE1230900D18364 /* ImageAnalyzable.swift in Sources */,
 				E9F008292AE129D000D18364 /* String+Extension.swift in Sources */,
 				E9F007BD2AE1230900D18364 /* ScreenControllerProtocol.swift in Sources */,
+				E94257F92AF3947100E077C4 /* AppSettingsRepositoryProtocol.swift in Sources */,
 				E9F007C52AE1230900D18364 /* CouponListUseCase.swift in Sources */,
 				E9E9FA422AE241F1002DB9A3 /* Array+Extension.swift in Sources */,
 				E9F007BF2AE1230900D18364 /* RepositoryContainerProtocol.swift in Sources */,
 				E9F007C02AE1230900D18364 /* DataStorable.swift in Sources */,
+				E94257F72AF3944B00E077C4 /* RepositoryError.swift in Sources */,
 				E9F008282AE129D000D18364 /* Data+Extension.swift in Sources */,
 				E9F007B82AE1230900D18364 /* Log.swift in Sources */,
 				E9F007BC2AE1230900D18364 /* UserNotificationCenterProtocol.swift in Sources */,

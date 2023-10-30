@@ -8,8 +8,10 @@
 import CouponBox_BusinessRules
 import Vision
 
-final class ImageAnalyzer: ImageAnalyzable {
-    func recognizeBarcode(from imageData: Data, handle: @escaping ([String]) -> Void) {
+public final class ImageAnalyzer: ImageAnalyzable {
+    public init() {}
+    
+    public func recognizeBarcode(from imageData: Data, handle: @escaping ([String]) -> Void) {
         guard let image = imageData.cgImage else { return }
         
         let request = VNDetectBarcodesRequest { request, error in
@@ -29,7 +31,7 @@ final class ImageAnalyzer: ImageAnalyzable {
         }
     }
     
-    func recognizeText(from imageData: Data, handle: @escaping ([String]) -> Void) {
+    public func recognizeText(from imageData: Data, handle: @escaping ([String]) -> Void) {
         guard let image = imageData.cgImage else { return }
         
         let request = VNRecognizeTextRequest { request, error in

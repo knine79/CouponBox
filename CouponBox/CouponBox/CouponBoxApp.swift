@@ -13,15 +13,7 @@ struct CouponBoxApp: App {
     @Environment(\.scenePhase) private var phase
     
     let useCaseFactory: UseCaseFactory = {
-        let useCaseFactoryDependencies = UseCaseFactoryDependencies(
-            repositoryContainer: RepositoryContainer(persistenceController: PersistenceController()),
-            store: DataStore(),
-            imageAnalyzer: ImageAnalyzer(),
-            userNotificationCenter: UserNotificationCenter(),
-            screenController: ScreenController()
-        )
-        
-        return UseCaseFactory(dependencies: useCaseFactoryDependencies)
+        UseCaseFactory.create()
     }()
     
     var couponExpirationNotificationUseCase: CouponExpirationNotificationUseCase {
@@ -30,8 +22,7 @@ struct CouponBoxApp: App {
     
     var body: some Scene {
         WindowGroup {
-            let viewFactoryDependencies = ViewFactoryDependencies(useCaseFactory: useCaseFactory)
-            let viewFactory = ViewFactory(dependencies: viewFactoryDependencies)
+            let viewFactory = ViewFactory.create(useCaseFactory: useCaseFactory)
             viewFactory.createCouponListView()
                 .environmentObject(viewFactory)
         }
@@ -40,12 +31,12 @@ struct CouponBoxApp: App {
             case .inactive:
                 rescheduleUpcomingExpirationNotifications()
                 couponExpirationNotificationUseCase.updateBadgeCount()
+                UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { printLog($0.map { $0.identifier}) })
                 
             case .active:
                 couponExpirationNotificationUseCase.requestNotificationAuthorizationIfNeeded()
             default: break
             }
-            UNUserNotificationCenter.current().getPendingNotificationRequests(completionHandler: { printLog($0.map { $0.identifier}) })
         }
     }
     

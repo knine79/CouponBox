@@ -14,7 +14,8 @@ public protocol CouponEditingPresentable {
 
 public protocol CouponEditingControllable {
     func viewDidAppear()
-    func saveCoupon()
+    func cancelButtonDidTap()
+    func doneButtonDidTap()
 }
 
 public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditingControllable {
@@ -24,7 +25,8 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
     
     private let couponImageData: Data?
     private let couponCode: String?
-    private let repository: CouponListRepositoryProtocol
+    private let completionHandler: (_ isDone: Bool) -> Void
+    private let repository: RepositoryContainerProtocol
     private let store: DataStorable
     private let imageAnalyzer: ImageAnalyzable
     
@@ -34,8 +36,9 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
     public var viewModel = CouponEditingViewModel()
     private var cancellables = Set<AnyCancellable>()
     
-    init(couponImageData: Data, repository: CouponListRepositoryProtocol, store: DataStorable, imageAnalyzer: ImageAnalyzable) {
+    init(couponImageData: Data, completionHandler: @escaping (_ isDone: Bool) -> Void = { _ in }, repository: RepositoryContainerProtocol, store: DataStorable, imageAnalyzer: ImageAnalyzable) {
         self.couponImageData = couponImageData
+        self.completionHandler = completionHandler
         self.couponCode = nil
         self.mode = .add
         
@@ -46,8 +49,9 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
         setupTriggers()
     }
     
-    init(couponCode: String, repository: CouponListRepositoryProtocol, store: DataStorable, imageAnalyzer: ImageAnalyzable) {
+    init(couponCode: String, repository: RepositoryContainerProtocol, store: DataStorable, imageAnalyzer: ImageAnalyzable) {
         self.couponImageData = nil
+        self.completionHandler = { _ in }
         self.couponCode = couponCode
         self.mode = .update
         
@@ -72,7 +76,9 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
         
         dirty.debounce(for: .seconds(0.2), scheduler: RunLoop.main)
             .sink { [weak self] _ in
-                self?.viewModel.canDone = self?.canDone == true
+                guard let self else { return }
+                viewModel.canDone = canDone == true
+                viewModel.alreadyExistWarningDisplayed = mode == .add && isExistCoupon(code: viewModel.barcode)
             }.store(in: &cancellables)
     }
     
@@ -80,7 +86,7 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
         if let couponImageData {
             couponImageDidInput(imageData: couponImageData)
         } else if let couponCode {
-            let item = try? repository.fetchCoupon(code: couponCode)
+            let item = try? repository.couponList.fetchCoupon(code: couponCode)
             viewModel.imageData = item?.imageData ?? Data()
             viewModel.barcode = item?.code ?? ""
             viewModel.name = item?.name ?? ""
@@ -106,10 +112,19 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
         dirty.send(false)
     }
     
-    public func saveCoupon() {
+    public func cancelButtonDidTap() {
+        completionHandler(false)
+    }
+    
+    public func doneButtonDidTap() {
+        saveCoupon()
+        completionHandler(true)
+    }
+    
+    private func saveCoupon() {
         let item = viewModel.toVO
-        if (try? repository.isExistCoupon(code: item.code)) == true {
-            try? repository.updateCoupon(item)
+        if (try? repository.couponList.isExistCoupon(code: item.code)) == true {
+            try? repository.couponList.updateCoupon(item)
             store.patch(key: .couponList) {
                 var value: [Coupon] = $0 ?? []
                 value.removeAll(where: { $0.code == item.code })
@@ -117,7 +132,7 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
                 return value
             }
         } else {
-            try? repository.addCoupon(item)
+            try? repository.couponList.addCoupon(item)
             store.patch(key: .couponList) {
                 var value: [Coupon] = $0 ?? []
                 value.append(item)
@@ -156,7 +171,7 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
                             allDetectedDates.append(contentsOf: detectedDates.map(\.endOfDay))
                         }
                     }
-                    viewModel.expiresAt = allDetectedDates.sorted().last!
+                    viewModel.expiresAt = allDetectedDates.sorted().last ?? Date()
                     viewModel.recognizedTexts = viewModel.recognizedTexts.duplicateRemoved(hasKeyProvider: { $0.hashValue })
                     viewModel.name = viewModel.recognizedTexts.dropFirst().first ?? ""
                     viewModel.shop = viewModel.recognizedTexts.first ?? ""
@@ -182,6 +197,6 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
     }
     
     private func isExistCoupon(code: String) -> Bool {
-        (try? repository.isExistCoupon(code: code)) == true
+        (try? repository.couponList.isExistCoupon(code: code)) == true
     }
 }

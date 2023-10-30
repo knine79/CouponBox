@@ -7,8 +7,8 @@
 
 import CouponBox_BusinessRules
 
-struct Stubs {
-    static let useCaseFactory: UseCaseFactory = {
+public struct Stubs {
+    public static let useCaseFactory: UseCaseFactory = {
         let useCaseFactoryDependencies = UseCaseFactoryDependencies(
             repositoryContainer: FakeRepositoryContainer(),
             store: DataStore(),
@@ -20,7 +20,7 @@ struct Stubs {
         return UseCaseFactory(dependencies: useCaseFactoryDependencies)
     }()
     
-    static func useCaseFactory(spyRepository: SpyRepositoryContainer) -> UseCaseFactory {
+    public static func useCaseFactory(spyRepository: SpyRepositoryContainer) -> UseCaseFactory {
         let useCaseFactoryDependencies = UseCaseFactoryDependencies(
             repositoryContainer: spyRepository,
             store: DataStore(),
@@ -31,20 +31,20 @@ struct Stubs {
         
         return UseCaseFactory(dependencies: useCaseFactoryDependencies)
     }
-    
-    static let viewFactory: ViewFactory = {
-        let viewFactoryDependencies = ViewFactoryDependencies(useCaseFactory: useCaseFactory)
-        return ViewFactory(dependencies: viewFactoryDependencies)
-    }()
 }
 
-final class FakeRepositoryContainer: RepositoryContainerProtocol {
-    var couponList: CouponListRepositoryProtocol! {
+public final class FakeRepositoryContainer: RepositoryContainerProtocol {
+    public var couponList: CouponListRepositoryProtocol! {
         FakeCouponListRepository()
+    }
+    
+    public var settings: AppSettingsRepositoryProtocol! {
+        FakeAppSettingsRepository()
     }
 }
 
-final class SpyRepositoryContainer: RepositoryContainerProtocol {
-    var couponList: CouponListRepositoryProtocol!
-    init() {}
+public final class SpyRepositoryContainer: RepositoryContainerProtocol {
+    public var couponList: CouponListRepositoryProtocol!
+    public var settings: AppSettingsRepositoryProtocol!
+    public init() {}
 }

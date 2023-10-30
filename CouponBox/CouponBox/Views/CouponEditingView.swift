@@ -7,8 +7,9 @@
 
 import SwiftUI
 import CouponBox_BusinessRules
+import CouponBox_ApplicationLogics
 
-struct CouponEditingView: View {
+public struct CouponEditingView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: CouponEditingViewModel
     private let controller: CouponEditingControllable
@@ -19,7 +20,7 @@ struct CouponEditingView: View {
         self.controller = controller
     }
     
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             ScrollView {
                 couponImage
@@ -37,13 +38,14 @@ struct CouponEditingView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("취소".locaized) {
                         presentationMode.wrappedValue.dismiss()
+                        controller.cancelButtonDidTap()
                     }
                 }
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("완료".locaized) {
                         presentationMode.wrappedValue.dismiss()
-                        controller.saveCoupon()
+                        controller.doneButtonDidTap()
                     }
                     .disabled(!viewModel.canDone)
                 }
@@ -71,7 +73,7 @@ struct CouponEditingView: View {
             }
         }
         .padding()
-        .background(RoundedRectangle(cornerRadius: 10).foregroundStyle(.accent.gradient))
+        .background(RoundedRectangle(cornerRadius: 10).foregroundStyle(Color.accent.gradient))
     }
     
     var recognizedInfos: some View {
@@ -94,73 +96,52 @@ struct CouponEditingView: View {
                             .frame(width: 60, alignment: .leading)
                     }
                 }
+                .environment(\.locale, .preferred)
                 .onChange(of: viewModel.expiresAt, { oldValue, newValue in
                     if viewModel.expiresAt != newValue.endOfDay {
                         viewModel.expiresAt = newValue.endOfDay
                     }
                 })
-                .environment(\.locale, .preferred)
                 HStack(spacing: 0) {
-                    Text("\(viewModel.expiresAt.relativeTime) 만료".locaized)
+                    if viewModel.expiresAt.expiredOrExpiresIn(days: 7) && !viewModel.loading{
+                        Text(viewModel.expiresAt.expired ? "만료됨".locaized : "\(viewModel.expiresAt.relativeTime) \("만료".locaized)")
+                            .foregroundStyle(Color.red)
+                            .font(.caption)
+                    }
                     Spacer()
                 }
-                .foregroundStyle(viewModel.expiresAt.expiredOrExpiresIn(days: 7) ? Color.red : Color.primary)
             }
-            HStack {
+            HStack(alignment: .firstTextBaseline) {
                 Text("쿠폰코드".locaized)
                     .bold()
-                    .frame(width: 60, alignment: .leading)
-                TextField("필수".locaized, text: $viewModel.barcode)
-                    .textFieldStyle(.roundedBorder)
-            }
-        }
-    }
-}
-
-struct SelectableTextField: View {
-    @State private var confirmationPresented = false
-
-    let title: String
-    let value: Binding<String>
-    let candidates: [String]
-    let placeholder: String
-    let selectionDescription: String
-    init(title: String, value: Binding<String>, candidates: [String], placeholder: String, selectionDescription: String) {
-        self.title = title
-        self.value = value
-        self.candidates = candidates
-        self.placeholder = placeholder
-        self.selectionDescription = selectionDescription
-    }
-    
-    var body: some View {
-        HStack() {
-            Text(title)
-                .bold()
-                .frame(width: 60, alignment: .leading)
-            TextField(placeholder, text: value)
-                .textFieldStyle(.roundedBorder)
-                .confirmationDialog(selectionDescription, isPresented: $confirmationPresented, titleVisibility: .visible) {
-                    ForEach(candidates, id: \.hashValue) { candidate in
-                        Button(candidate) {
-                            value.wrappedValue = candidate
-                        }
+                    .frame(width: 60, alignment: .topLeading)
+                VStack(alignment: .leading, spacing: 4) {
+                    TextField("필수".locaized, text: $viewModel.barcode)
+                        .textFieldStyle(.roundedBorder)
+                    if viewModel.alreadyExistWarningDisplayed {
+                        Text("같은 쿠폰이 이미 추가되어 있습니다.".locaized)
+                            .font(.caption)
+                            .foregroundStyle(Color.red)
                     }
                 }
-            Button("선택".locaized) {
-                confirmationPresented.toggle()
             }
-            .disabled(candidates.isEmpty)
         }
     }
-}
-
-#Preview {
-    return Stubs.viewFactory.createCouponEditingView(couponImageData: UIImage(named: "sample")?.pngData() ?? Data())
 }
 
 #Preview {
     let useCase = Stubs.useCaseFactory.createCouponEditingUseCase(couponImageData: UIImage(named: "sample")?.pngData() ?? Data())
-    useCase.viewModel.loading = true
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        useCase.viewModel.alreadyExistWarningDisplayed = true
+        useCase.viewModel.canDone = false
+    }
+    return CouponEditingView(presenter: useCase, controller: useCase)
+}
+
+#Preview {
+    let useCase = Stubs.useCaseFactory.createCouponEditingUseCase(couponImageData: UIImage(named: "sample")?.pngData() ?? Data())
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        useCase.viewModel.loading = true
+    }
     return CouponEditingView(presenter: useCase, controller: useCase)
 }

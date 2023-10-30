@@ -6,14 +6,21 @@
 //
 
 import CouponBox_BusinessRules
+import CoreData
 
 public final class RepositoryContainer: RepositoryContainerProtocol {
-    let persistenceController: PersistenceController
-    init(persistenceController: PersistenceController) {
-        self.persistenceController = persistenceController
+    private let persistentContainer: NSPersistentContainer
+    private let cache: Cache
+    public init(persistentContainer: NSPersistentContainer, cache: Cache) {
+        self.persistentContainer = persistentContainer
+        self.cache = cache
     }
     
     public var couponList: CouponListRepositoryProtocol! {
-        CouponListRepository(container: persistenceController.container)
+        CouponListRepository(container: persistentContainer)
+    }
+    
+    public var settings: AppSettingsRepositoryProtocol! {
+        AppSettingsRepository(cache: cache)
     }
 }

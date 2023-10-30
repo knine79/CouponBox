@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="23A344" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="23A344" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="CouponDAO" representedClassName="CouponDAO" syncable="YES" codeGenerationType="class">
         <attribute name="code" attributeType="String" defaultValueString="&quot;&quot;" allowsCloudEncryption="YES"/>
-        <attribute name="expiresAt" attributeType="Date" defaultDateTimeInterval="719469060" usesScalarValueType="NO"/>
+        <attribute name="expiresAt" attributeType="Date" defaultDateTimeInterval="720584280" usesScalarValueType="NO"/>
         <attribute name="imageData" optional="YES" attributeType="Binary" allowsCloudEncryption="YES"/>
         <attribute name="name" attributeType="String" defaultValueString="&quot;&quot;"/>
         <attribute name="shop" attributeType="String" defaultValueString="&quot;&quot;"/>

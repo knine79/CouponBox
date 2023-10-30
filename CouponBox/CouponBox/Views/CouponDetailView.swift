@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CouponBox_BusinessRules
+import CouponBox_ApplicationLogics
 
 struct CouponDetailView: View {
     @Environment(\.scenePhase) private var phase

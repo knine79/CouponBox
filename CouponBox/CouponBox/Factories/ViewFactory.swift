@@ -8,13 +8,17 @@
 import CouponBox_BusinessRules
 import SwiftUI
 
-struct ViewFactoryDependencies {
+public struct ViewFactoryDependencies {
     let useCaseFactory: UseCaseFactory
+    
+    public init(useCaseFactory: UseCaseFactory) {
+        self.useCaseFactory = useCaseFactory
+    }
 }
 
-final class ViewFactory: ObservableObject {
+public final class ViewFactory: ObservableObject {
     let dependencies: ViewFactoryDependencies
-    init(dependencies: ViewFactoryDependencies) {
+    public init(dependencies: ViewFactoryDependencies) {
         self.dependencies = dependencies
     }
     
@@ -28,13 +32,20 @@ final class ViewFactory: ObservableObject {
         return CouponDetailView(coupon: coupon, screenBrightnessController: useCase)
     }
     
-    func createCouponEditingView(couponImageData: Data) -> CouponEditingView {
-        let useCase = dependencies.useCaseFactory.createCouponEditingUseCase(couponImageData: couponImageData)
+    func createCouponEditingView(couponImageData: Data, completionHandler: @escaping (_ isDone: Bool) -> Void = { _ in }) -> CouponEditingView {
+        let useCase = dependencies.useCaseFactory.createCouponEditingUseCase(couponImageData: couponImageData, completionHandler: completionHandler)
         return CouponEditingView(presenter: useCase, controller: useCase)
     }
     
     func createCouponEditingView(couponCode: String) -> CouponEditingView {
         let useCase = dependencies.useCaseFactory.createCouponEditingUseCase(couponCode: couponCode)
         return CouponEditingView(presenter: useCase, controller: useCase)
+    }
+}
+
+extension ViewFactory {
+    public static func create(useCaseFactory: UseCaseFactory) -> ViewFactory {
+        let viewFactoryDependencies = ViewFactoryDependencies(useCaseFactory: useCaseFactory)
+        return ViewFactory(dependencies: viewFactoryDependencies)
     }
 }

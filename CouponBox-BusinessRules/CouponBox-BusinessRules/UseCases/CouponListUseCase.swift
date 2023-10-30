@@ -15,16 +15,18 @@ public protocol CouponListPresentable {
 public protocol CouponListControllable {
     func fetchCouponList()
     func removeCoupon(code: String)
+    func loadExpirationNotificationTime()
+    func saveExpirationNotificationTime()
 }
 
 public final class CouponListUseCase: CouponListPresentable, CouponListControllable {
-    private let repository: CouponListRepositoryProtocol
+    private let repository: RepositoryContainerProtocol
     private let store: DataStorable
     
     public var viewModel = CouponListViewModel()
     private var cancellables = Set<AnyCancellable>()
 
-    init(repository: CouponListRepositoryProtocol, store: DataStorable) {
+    init(repository: RepositoryContainerProtocol, store: DataStorable) {
         self.repository = repository
         self.store = store
         
@@ -48,21 +50,36 @@ public final class CouponListUseCase: CouponListPresentable, CouponListControlla
                 }
                 self?.viewModel.loading = false
             }.store(in: &cancellables)
+        
+        store.valuePublisher(key: .expirationNotificationTime, typeOf: TimeInterval.self)
+            .sink { [weak self] in
+                self?.viewModel.notificationTime = Date.locaizedZero.addingTimeInterval($0 ?? 7 * 3600)
+            }.store(in: &cancellables)
     }
     
     public func fetchCouponList() {
         if Thread.isMainThread {
             viewModel.loading = true
         }
-        store.update(key: .couponList, value: (try? repository.fetchCouponList()) ?? [])
+        store.update(key: .couponList, value: (try? repository.couponList.fetchCouponList()) ?? [])
     }
     
     public func removeCoupon(code: String) {
-        try? repository.removeCoupon(code: code)
+        try? repository.couponList.removeCoupon(code: code)
         store.patch(key: .couponList) {
             var value: [Coupon] = $0 ?? []
             value.removeAll(where: { $0.code == code})
             return value
         }
+    }
+    
+    public func loadExpirationNotificationTime() {
+        store.update(key: .expirationNotificationTime, value: repository.settings.loadExpirationNotificationTime())
+    }
+    
+    public func saveExpirationNotificationTime() {
+        let timeInterval = Date.locaizedZero.distance(to: viewModel.notificationTime)
+        store.update(key: .expirationNotificationTime, value: timeInterval)
+        repository.settings.saveExpirationNotificationTime(timeInterval)
     }
 }

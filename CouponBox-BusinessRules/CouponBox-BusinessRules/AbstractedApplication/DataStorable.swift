@@ -11,6 +11,7 @@ import Combine
 public enum StoreKey: String {
     case couponList
     case legacyScreenBrightness
+    case expirationNotificationTime
 }
 
 public protocol DataStorable: AnyObject {

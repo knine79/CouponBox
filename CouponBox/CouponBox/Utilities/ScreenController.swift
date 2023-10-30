@@ -8,12 +8,14 @@
 import CouponBox_BusinessRules
 import UIKit
 
-final class ScreenController: ScreenControllerProtocol {
-    var brightness: CGFloat {
+public final class ScreenController: ScreenControllerProtocol {
+    public init() {}
+    
+    public var brightness: CGFloat {
         UIScreen.main.brightness
     }
     
-    func setBrightness(_ value: CGFloat) {
+    public func setBrightness(_ value: CGFloat) {
         UIScreen.main.brightness = value
     }
 }

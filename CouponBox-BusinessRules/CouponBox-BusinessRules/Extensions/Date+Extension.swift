@@ -23,6 +23,10 @@ extension Date {
         self = date
     }
     
+    public static var locaizedZero: Date {
+        Date(timeIntervalSince1970: 24 * 3600).startOfDay
+    }
+    
     public var startOfDay: Date {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month, .day], from: self)

@@ -8,10 +8,12 @@
 import CouponBox_BusinessRules
 import UserNotifications
 
-final class UserNotificationCenter: UserNotificationCenterProtocol {
+public final class UserNotificationCenter: UserNotificationCenterProtocol {
+    public init() {}
+    
     let center = UNUserNotificationCenter.current()
     
-    func requestAuthorizationIfNeeded() {
+    public func requestAuthorizationIfNeeded() {
         center.getNotificationSettings { [weak self] settings in
             guard let self, (settings.authorizationStatus != .authorized) else { return }
             
@@ -23,7 +25,7 @@ final class UserNotificationCenter: UserNotificationCenterProtocol {
         }
     }
     
-    func scheduleNotification(title: String, body: String, at date: Date?) {
+    public func scheduleNotification(title: String, body: String, at date: Date?) {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
@@ -39,11 +41,11 @@ final class UserNotificationCenter: UserNotificationCenterProtocol {
         
     }
     
-    func cancelAllNotifications() {
+    public func cancelAllNotifications() {
         center.removeAllPendingNotificationRequests()
     }
     
-    func setApplicationIconBadgeNumber(_ value: Int) {
+    public func setApplicationIconBadgeNumber(_ value: Int) {
         center.setBadgeCount(value)
     }
 }

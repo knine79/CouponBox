@@ -37,8 +37,9 @@ public final class CouponExpirationNotificationUseCase {
     }
     
     private func scheduleExpirationNotifications(for coupon: Coupon) {
-        userNotificationCenter.scheduleNotification(title: "7일 후에 만료되는 쿠폰이 있습니다.".locaized, body: coupon.name, at: coupon.expiresAt.addingTimeInterval(24 * 3600 * -7).startOfDay)
-        userNotificationCenter.scheduleNotification(title: "3일 후에 만료되는 쿠폰이 있습니다.".locaized, body: coupon.name, at: coupon.expiresAt.addingTimeInterval(24 * 3600 * -3).startOfDay)
-        userNotificationCenter.scheduleNotification(title: "오늘 만료되는 쿠폰이 있습니다.".locaized, body: coupon.name, at: coupon.expiresAt.startOfDay)
+        let notificationTime = store.value(key: .expirationNotificationTime, typeOf: TimeInterval.self) ?? 7 * 3600
+        userNotificationCenter.scheduleNotification(title: "7일 후에 만료되는 쿠폰이 있습니다.".locaized, body: coupon.name, at: coupon.expiresAt.addingTimeInterval(24 * 3600 * -7).startOfDay.addingTimeInterval(notificationTime))
+        userNotificationCenter.scheduleNotification(title: "3일 후에 만료되는 쿠폰이 있습니다.".locaized, body: coupon.name, at: coupon.expiresAt.addingTimeInterval(24 * 3600 * -3).startOfDay.addingTimeInterval(notificationTime))
+        userNotificationCenter.scheduleNotification(title: "오늘 만료되는 쿠폰이 있습니다.".locaized, body: coupon.name, at: coupon.expiresAt.startOfDay.addingTimeInterval(notificationTime))
     }
 }

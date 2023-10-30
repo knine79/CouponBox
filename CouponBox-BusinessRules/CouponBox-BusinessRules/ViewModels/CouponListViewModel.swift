@@ -12,5 +12,6 @@ public final class CouponListViewModel: ObservableObject {
     @Published public var notSoonToExpireCoupons: [Coupon] = []
     @Published public var soonToExpireCoupons: [Coupon] = []
     @Published public var expiredCoupons: [Coupon] = []
+    @Published public var notificationTime: Date = Date()
     @Published public var loading = false
 }

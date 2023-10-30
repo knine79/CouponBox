@@ -9,4 +9,5 @@ import Foundation
 
 public protocol RepositoryContainerProtocol {
     var couponList: CouponListRepositoryProtocol! { get }
+    var settings: AppSettingsRepositoryProtocol! { get }
 }

@@ -8,11 +8,12 @@
 import SwiftUI
 import PhotosUI
 import CouponBox_BusinessRules
+import CouponBox_ApplicationLogics
 
 struct CouponListView: View {
     @EnvironmentObject private var viewFactory: ViewFactory
     @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var registrationSheetPresented: Bool = false
+    @State private var detentsPresented: Bool = false
     @ObservedObject private var viewModel: CouponListViewModel
     
     @State private var selectedImageData: Data?
@@ -39,9 +40,16 @@ struct CouponListView: View {
                 .navigationTitle("내 쿠폰".locaized)
                 .toolbarBackground(Color.background, for: .automatic)
                 .toolbar(content: {
-                    ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarItem(placement: .topBarLeading) {
                         PhotosPicker(selection: $selectedItem, matching: .any(of: [.images, .not(.livePhotos)])) {
                             Image(systemName: "plus")
+                        }
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            detentsPresented.toggle()
+                        } label: {
+                            Image(systemName: "gearshape")
                         }
                     }
                 })
@@ -66,6 +74,14 @@ struct CouponListView: View {
                         viewFactory.createCouponEditingView(couponImageData: selectedImageData)
                     }
                 }
+                .sheet(isPresented: $detentsPresented, content: {
+                    settingView
+                        .onAppear {
+                            controller.loadExpirationNotificationTime()
+                        }
+                        .presentationDetents([.height(340)])
+                })
+                
             }
         }
         .onAppear {
@@ -129,6 +145,7 @@ struct CouponListView: View {
             NavigationLink(value: coupon) {
                 couponListItemView(coupon: coupon)
             }
+            .disabled(coupon.expiresAt.expired)
         }
         .onDelete(perform: { indexSet in
             indexSet.forEach {
@@ -164,13 +181,43 @@ struct CouponListView: View {
                 HStack(spacing: 0) {
                     Text(coupon.expiresAt, style: .date)
                         .environment(\.locale, .preferred)
-                    Text("(\(coupon.expiresAt.relativeTime) \("만료".locaized))")
+                    Text(coupon.expiresAt.expired ? "(만료됨)".locaized : "(\(coupon.expiresAt.relativeTime) \("만료".locaized))")
                         .environment(\.locale, .preferred)
                 }
                 .foregroundStyle(coupon.expiresAt.expiredOrExpiresIn(days: 7) ? Color.red : Color.gray)
                 .font(.caption)
             }
         }
+    }
+    
+    var settingView: some View {
+        VStack {
+            HStack {
+                Button("취소".locaized) {
+                    detentsPresented.toggle()
+                }
+                Spacer()
+                Button {
+                    controller.saveExpirationNotificationTime()
+                    detentsPresented.toggle()
+                } label: {
+                    Text("저장".locaized)
+                }
+            }
+            .padding(.bottom)
+            Spacer()
+            Text("하루 중 쿠폰 만료 알림을 언제 받고 싶으세요?".locaized)
+            Text("쿠폰이 만료되기 7일전, 3일전, 당일에 알림을 보내드립니다.".locaized)
+                .font(.caption)
+                .foregroundStyle(Color.gray)
+            DatePicker("", selection: $viewModel.notificationTime, displayedComponents: .hourAndMinute)
+                .environment(\.locale, .preferred)
+                .datePickerStyle(.wheel)
+                .labelsHidden()
+            
+            
+        }
+        .padding(24)
     }
 }
 
@@ -182,6 +229,7 @@ struct CouponListView: View {
         Coupon(name: "아이스 아메리카노3", shop: "스타벅스", expiresAt: .endOfToday.addingTimeInterval(7*24*3600), code: "1233234561223", imageData: UIImage(named: "sample")?.pngData() ?? Data()),
         Coupon(name: "아이스 아메리카노4", shop: "스타벅스", expiresAt: .endOfToday, code: "900369921874", imageData: UIImage(named: "sample3")?.pngData() ?? Data())
     ])
+    spyRepository.settings = FakeAppSettingsRepository()
     let useCase = Stubs.useCaseFactory(spyRepository: spyRepository).createCouponListUseCase()
     return CouponListView(presenter: useCase, controller: useCase)
         .environmentObject(Stubs.viewFactory)

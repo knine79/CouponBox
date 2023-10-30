@@ -17,6 +17,7 @@ public final class CouponEditingViewModel: ObservableObject {
     @Published public var recognizedTexts: [String] = []
     @Published public var loading: Bool = false
     @Published public var canDone: Bool = false
+    @Published public var alreadyExistWarningDisplayed: Bool = false
     
     var toVO: Coupon {
         Coupon(name: name, shop: shop, expiresAt: expiresAt, code: barcode, imageData: imageData ?? Data())

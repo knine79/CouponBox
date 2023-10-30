@@ -30,17 +30,18 @@ public final class UseCaseFactory {
     }
     
     public func createCouponListUseCase() -> CouponListUseCase {
-        CouponListUseCase(repository: dependencies.repositoryContainer.couponList, store: dependencies.store)
+        CouponListUseCase(repository: dependencies.repositoryContainer, store: dependencies.store)
     }
     
     public func createScreenBrightnessUseCase() -> ScreenBrightnessUseCase {
         ScreenBrightnessUseCase(store: dependencies.store, screenController: dependencies.screenController)
     }
     
-    public func createCouponEditingUseCase(couponImageData: Data) -> CouponEditingUseCase {
+    public func createCouponEditingUseCase(couponImageData: Data, completionHandler: @escaping (_ isDone: Bool) -> Void = { _ in }) -> CouponEditingUseCase {
         CouponEditingUseCase(
             couponImageData: couponImageData,
-            repository: dependencies.repositoryContainer.couponList,
+            completionHandler: completionHandler,
+            repository: dependencies.repositoryContainer,
             store: dependencies.store,
             imageAnalyzer: dependencies.imageAnalyzer
         )
@@ -49,7 +50,7 @@ public final class UseCaseFactory {
     public func createCouponEditingUseCase(couponCode: String) -> CouponEditingUseCase {
         CouponEditingUseCase(
             couponCode: couponCode,
-            repository: dependencies.repositoryContainer.couponList,
+            repository: dependencies.repositoryContainer,
             store: dependencies.store,
             imageAnalyzer: dependencies.imageAnalyzer
         )
