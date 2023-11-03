@@ -22,6 +22,7 @@ struct PersistentContainer {
         let container = NSPersistentCloudKitContainer(name: "CouponBox")
         if let url {
             let storeDescription = NSPersistentStoreDescription(url: url)
+            storeDescription.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.data.com.samuel.CouponBox")
             container.persistentStoreDescriptions = [storeDescription]
         }
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in

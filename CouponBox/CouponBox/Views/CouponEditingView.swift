@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CouponBox_BusinessRules
-import CouponBox_ApplicationLogics
 
 public struct CouponEditingView: View {
     @Environment(\.presentationMode) private var presentationMode

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CouponBox_BusinessRules
-import CouponBox_ApplicationLogics
 
 struct CouponDetailView: View {
     @Environment(\.scenePhase) private var phase
@@ -22,7 +21,7 @@ struct CouponDetailView: View {
     }
     
     var body: some View {
-        couponImage
+        couponImageView
             .padding(.horizontal, 24)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.background)
@@ -46,11 +45,16 @@ struct CouponDetailView: View {
             }
     }
     
-    var couponImage: some View {
+    var couponImage: Image? {
+        guard let image = coupon.imageData.cgImage else { return nil }
+        return Image(image, scale: 1, label: Text("image"))
+    }
+    
+    var couponImageView: some View {
         VStack {
             Group {
-                if let image = coupon.imageData.cgImage {
-                    Image(image, scale: 1, label: Text("image"))
+                if let image = couponImage {
+                    image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 } else {
@@ -67,8 +71,15 @@ struct CouponDetailView: View {
             .toolbarBackground(Color.background, for: .automatic)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("편집".locaized) {
+                    Button {
                         editViewPresented.toggle()
+                    } label: {
+                        Image(systemName: "slider.horizontal.3")
+                    }
+                }
+                if let couponImage {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        ShareLink(item: couponImage, preview: SharePreview(coupon.name, image: couponImage))
                     }
                 }
             }
@@ -81,6 +92,6 @@ struct CouponDetailView: View {
 
 #Preview {
     NavigationStack {
-        Stubs.viewFactory.createCouponDetailView(coupon: Coupon(name: "", shop: "", expiresAt: .endOfToday, code: "", imageData: UIImage(named: "sample")?.pngData() ?? Data()))
+        Stubs.viewFactory.createCouponDetailView(coupon: Coupon(name: "아이스 아메리카노", shop: "", expiresAt: .endOfToday, code: "", imageData: UIImage(named: "sample")?.pngData() ?? Data()))
     }
 }

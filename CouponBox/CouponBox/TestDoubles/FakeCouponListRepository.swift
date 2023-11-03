@@ -6,6 +6,7 @@
 //
 
 import CouponBox_BusinessRules
+import Combine
 
 final class FakeCouponListRepository: CouponListRepositoryProtocol {
     private var coupons: [Coupon]
@@ -13,16 +14,22 @@ final class FakeCouponListRepository: CouponListRepositoryProtocol {
         self.coupons = coupons
     }
     
+    var couponListPublisher: AnyPublisher<[Coupon], Never> {
+        Publishers.MergeMany(coupons.publisher)
+            .collect()
+            .eraseToAnyPublisher()
+    }
+    
     public func fetchCouponList() throws -> [Coupon] {
         coupons
-    }
-
-    public func fetchCoupon(code: String) throws -> Coupon? {
-        coupons.first(where: { $0.code == code })
     }
     
     public func isExistCoupon(code: String) throws -> Bool {
         coupons.contains(where: { $0.code == code })
+    }
+    
+    func fetchCoupon(code: String) throws -> Coupon? {
+        coupons.first(where: { $0.code == code })
     }
     
     public func addCoupon(_ coupon: Coupon) throws {

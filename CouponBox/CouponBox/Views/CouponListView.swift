@@ -8,7 +8,6 @@
 import SwiftUI
 import PhotosUI
 import CouponBox_BusinessRules
-import CouponBox_ApplicationLogics
 
 struct CouponListView: View {
     @EnvironmentObject private var viewFactory: ViewFactory

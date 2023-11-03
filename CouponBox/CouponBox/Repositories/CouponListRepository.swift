@@ -7,6 +7,7 @@
 
 import CouponBox_BusinessRules
 import CoreData
+import Combine
 
 extension Coupon {
 
@@ -23,36 +24,45 @@ final class CouponListRepository: CouponListRepositoryProtocol {
     private let container: NSPersistentContainer
     init(container: NSPersistentContainer) {
         self.container = container
+        NotificationCenter.default.addObserver(forName: .NSPersistentStoreDidImportUbiquitousContentChanges, object: self, queue: nil) { [weak self] notification in
+            guard let self, let coupons = try? fetchCouponList() else { return }
+            couponListSubject.send(coupons)
+        }
     }
 
+    private var cancellables = Set<AnyCancellable>()
+    private var couponListSubject = PassthroughSubject<[Coupon], Never>()
     private var context: NSManagedObjectContext {
         container.viewContext
     }
     
-    func fetchCouponList() throws -> [Coupon] {
-        let request = CouponDAO.fetchRequest()
-        return try context.fetch(request).map { Coupon(coupon: $0) }
+    var couponListPublisher: AnyPublisher<[Coupon], Never> {
+        couponListSubject.eraseToAnyPublisher()
     }
-
+    
+    func fetchCouponList() throws -> [Coupon] {
+        try fetchCouponData().map { Coupon(coupon: $0) }
+    }
+    
     func fetchCoupon(code: String) throws -> Coupon? {
-        return try fetchCoupons(code: code).first.map { Coupon(coupon: $0) }
+        try fetchCouponData(code: code).first.map { Coupon(coupon: $0) }
     }
     
     func isExistCoupon(code: String) throws -> Bool {
-        try fetchCoupons(code: code).isEmpty == false
+        try fetchCouponData(code: code).isEmpty == false
     }
     
-    func addCoupon(_ coupon: Coupon) throws {
-        guard try fetchCoupons(code: coupon.code).isEmpty else { throw RepositoryError.alreadyExistItem }
+    func addCoupon(_ value: Coupon) throws {
+        guard try fetchCouponData(code: value.code).isEmpty else { throw RepositoryError.alreadyExistItem }
         guard let entity = NSEntityDescription.entity(forEntityName: "CouponDAO", in: context) else {
             throw RepositoryError.entityNotFoundError
         }
         let object = NSManagedObject(entity: entity, insertInto: context)
-        object.setValue(coupon.name, forKey: "name")
-        object.setValue(coupon.shop, forKey: "shop")
-        object.setValue(coupon.code, forKey: "code")
-        object.setValue(coupon.expiresAt, forKey: "expiresAt")
-        object.setValue(coupon.imageData, forKey: "imageData")
+        object.setValue(value.name, forKey: "name")
+        object.setValue(value.shop, forKey: "shop")
+        object.setValue(value.code, forKey: "code")
+        object.setValue(value.expiresAt, forKey: "expiresAt")
+        object.setValue(value.imageData, forKey: "imageData")
         do {
             try context.save()
         } catch {
@@ -60,13 +70,13 @@ final class CouponListRepository: CouponListRepositoryProtocol {
         }
     }
     
-    func updateCoupon(_ coupon: Coupon) throws {
-        guard let object = try fetchCoupons(code: coupon.code).first else { throw RepositoryError.itemNotFound }
-        object.setValue(coupon.name, forKey: "name")
-        object.setValue(coupon.shop, forKey: "shop")
-        object.setValue(coupon.code, forKey: "code")
-        object.setValue(coupon.expiresAt, forKey: "expiresAt")
-        object.setValue(coupon.imageData, forKey: "imageData")
+    func updateCoupon(_ value: Coupon) throws {
+        guard let object = try fetchCouponData(code: value.code).first else { throw RepositoryError.itemNotFound }
+        object.setValue(value.name, forKey: "name")
+        object.setValue(value.shop, forKey: "shop")
+        object.setValue(value.code, forKey: "code")
+        object.setValue(value.expiresAt, forKey: "expiresAt")
+        object.setValue(value.imageData, forKey: "imageData")
         do {
             try context.save()
         } catch {
@@ -75,7 +85,7 @@ final class CouponListRepository: CouponListRepositoryProtocol {
     }
     
     func removeCoupon(code: String) throws {
-        try fetchCoupons(code: code)
+        try fetchCouponData(code: code)
             .forEach { object in
                 context.delete(object)
             }
@@ -83,15 +93,17 @@ final class CouponListRepository: CouponListRepositoryProtocol {
         try context.save()
     }
     
-    private func fetchRequest(code: String) -> NSFetchRequest<CouponDAO> {
-        let request = CouponDAO.fetchRequest()
-        request.predicate = NSPredicate(format: "code == %@", code)
-        return request
-    }
-    
-    private func fetchCoupons(code: String) throws -> [CouponDAO] {
+    private func fetchCouponData(code: String? = nil) throws -> [CouponDAO] {
         let request = fetchRequest(code: code)
         return try context.fetch(request)
+    }
+    
+    private func fetchRequest(code: String? = nil) -> NSFetchRequest<CouponDAO> {
+        let request = CouponDAO.fetchRequest()
+        if let code {
+            request.predicate = NSPredicate(format: "code == %@", code)
+        }
+        return request
     }
     
     private func saveContext() {

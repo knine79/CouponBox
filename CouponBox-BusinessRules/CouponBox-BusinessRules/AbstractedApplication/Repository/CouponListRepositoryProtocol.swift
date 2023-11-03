@@ -5,7 +5,7 @@
 //  Created by Samuel Kim on 10/11/23.
 //
 
-import Foundation
+import Combine
 
 public struct Coupon: Hashable {
     public var name: String
@@ -24,6 +24,7 @@ public struct Coupon: Hashable {
 }
 
 public protocol CouponListRepositoryProtocol {
+    var couponListPublisher: AnyPublisher<[Coupon], Never> { get }
     func fetchCouponList() throws -> [Coupon]
     func fetchCoupon(code: String) throws -> Coupon?
     func isExistCoupon(code: String) throws -> Bool

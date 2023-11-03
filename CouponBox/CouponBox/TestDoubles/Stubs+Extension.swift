@@ -5,7 +5,7 @@
 //  Created by Samuel Kim on 10/30/23.
 //
 
-import CouponBox_ApplicationLogics
+import Foundation
 
 extension Stubs {
     public static let viewFactory: ViewFactory = {
