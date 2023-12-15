@@ -14,12 +14,6 @@ final class FakeCouponListRepository: CouponListRepositoryProtocol {
         self.coupons = coupons
     }
     
-    var couponListPublisher: AnyPublisher<[Coupon], Never> {
-        Publishers.MergeMany(coupons.publisher)
-            .collect()
-            .eraseToAnyPublisher()
-    }
-    
     public func fetchCouponList() throws -> [Coupon] {
         coupons
     }

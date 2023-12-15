@@ -55,6 +55,9 @@ struct CouponListView: View {
                 .navigationDestination(for: Coupon.self) { coupon in
                     viewFactory.createCouponDetailView(coupon: coupon)
                         .navigationBarTitleDisplayMode(.inline)
+                        .onDisappear {
+                            controller.fetchCouponList()
+                        }
                 }
                 .onChange(of: selectedItem) { _, newValue in
                     Task {

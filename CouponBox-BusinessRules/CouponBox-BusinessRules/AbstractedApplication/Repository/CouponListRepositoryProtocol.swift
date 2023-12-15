@@ -24,7 +24,6 @@ public struct Coupon: Hashable {
 }
 
 public protocol CouponListRepositoryProtocol {
-    var couponListPublisher: AnyPublisher<[Coupon], Never> { get }
     func fetchCouponList() throws -> [Coupon]
     func fetchCoupon(code: String) throws -> Coupon?
     func isExistCoupon(code: String) throws -> Bool

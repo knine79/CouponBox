@@ -55,13 +55,6 @@ public final class CouponListUseCase: CouponListPresentable, CouponListControlla
             .sink { [weak self] in
                 self?.viewModel.notificationTime = Date.locaizedZero.addingTimeInterval($0 ?? 7 * 3600)
             }.store(in: &cancellables)
-        
-        repository.couponList.couponListPublisher
-            .sink { [weak self] coupons in
-                DispatchQueue.main.async {
-                    self?.store.update(key: .couponList, value: coupons)
-                }
-            }.store(in: &cancellables)
     }
     
     public func fetchCouponList() {

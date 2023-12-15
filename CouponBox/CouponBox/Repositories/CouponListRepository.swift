@@ -24,20 +24,11 @@ final class CouponListRepository: CouponListRepositoryProtocol {
     private let container: NSPersistentContainer
     init(container: NSPersistentContainer) {
         self.container = container
-        NotificationCenter.default.addObserver(forName: .NSPersistentStoreDidImportUbiquitousContentChanges, object: self, queue: nil) { [weak self] notification in
-            guard let self, let coupons = try? fetchCouponList() else { return }
-            couponListSubject.send(coupons)
-        }
     }
 
     private var cancellables = Set<AnyCancellable>()
-    private var couponListSubject = PassthroughSubject<[Coupon], Never>()
     private var context: NSManagedObjectContext {
         container.viewContext
-    }
-    
-    var couponListPublisher: AnyPublisher<[Coupon], Never> {
-        couponListSubject.eraseToAnyPublisher()
     }
     
     func fetchCouponList() throws -> [Coupon] {
