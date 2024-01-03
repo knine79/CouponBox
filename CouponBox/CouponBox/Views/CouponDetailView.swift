@@ -13,11 +13,11 @@ struct CouponDetailView: View {
     @EnvironmentObject private var viewFactory: ViewFactory
     @State private var editViewPresented = false
     
-    private let coupon: Coupon
-    private let screenBrightnessController: ScreenBrightnessControllable
-    init(coupon: Coupon, screenBrightnessController: ScreenBrightnessControllable) {
-        self.coupon = coupon
-        self.screenBrightnessController = screenBrightnessController
+    private let viewModel: CouponViewModel
+    private let controller: CouponDetailViewController?
+    init(viewModel: CouponViewModel, controller: CouponDetailViewController? = nil) {
+        self.viewModel = viewModel
+        self.controller = controller
     }
     
     var body: some View {
@@ -25,28 +25,28 @@ struct CouponDetailView: View {
             .padding(.horizontal, 24)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.background)
-            .onAppear { screenBrightnessController.maximizeBrightness() }
-            .onDisappear { screenBrightnessController.rollbackBrightness() }
+            .onAppear { controller?.maximizeBrightness() }
+            .onDisappear { controller?.rollbackBrightness() }
             .onChange(of: editViewPresented) { oldValue, newValue in
                 if newValue {
-                    screenBrightnessController.rollbackBrightness()
+                    controller?.rollbackBrightness()
                 } else {
-                    screenBrightnessController.maximizeBrightness()
+                    controller?.maximizeBrightness()
                 }
             }
             .onChange(of: phase) { oldValue, newValue in
                 switch newValue {
                 case .inactive:
-                    screenBrightnessController.rollbackBrightness()
+                    controller?.rollbackBrightness()
                 case .active:
-                    screenBrightnessController.maximizeBrightness()
+                    controller?.maximizeBrightness()
                 default: break
                 }
             }
     }
     
     var couponImage: Image? {
-        guard let image = coupon.imageData.cgImage else { return nil }
+        guard let image = viewModel.imageData.cgImage else { return nil }
         return Image(image, scale: 1, label: Text("image"))
     }
     
@@ -79,12 +79,12 @@ struct CouponDetailView: View {
                 }
                 if let couponImage {
                     ToolbarItem(placement: .topBarTrailing) {
-                        ShareLink(item: couponImage, preview: SharePreview(coupon.name, image: couponImage))
+                        ShareLink(item: couponImage, preview: SharePreview(viewModel.name, image: couponImage))
                     }
                 }
             }
             .sheet(isPresented: $editViewPresented) {
-                viewFactory.createCouponEditingView(couponCode: coupon.code)
+                viewFactory.createCouponEditingView(couponCode: viewModel.code)
             }
         }
     }
@@ -92,6 +92,6 @@ struct CouponDetailView: View {
 
 #Preview {
     NavigationStack {
-        Stubs.viewFactory.createCouponDetailView(coupon: Coupon(name: "아이스 아메리카노", shop: "", expiresAt: .endOfToday, code: "", imageData: UIImage(named: "sample")?.pngData() ?? Data()))
+        Stubs.viewFactory.createCouponDetailView(coupon: CouponViewModel(from: Coupon(name: "아이스 아메리카노", shop: "", expiresAt: .endOfToday, code: "", imageData: UIImage(named: "sample")?.pngData() ?? Data())))
     }
 }

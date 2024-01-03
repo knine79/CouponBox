@@ -7,12 +7,12 @@
 
 import Foundation
 
-public protocol ScreenBrightnessControllable {
+public protocol ScreenBrightnessUseCaseInputProtocol {
     func maximizeBrightness()
     func rollbackBrightness()
 }
 
-public final class ScreenBrightnessUseCase: ScreenBrightnessControllable {
+public final class ScreenBrightnessUseCase: ScreenBrightnessUseCaseInputProtocol {
 
     private let store: DataStorable
     private let screenController: ScreenControllerProtocol

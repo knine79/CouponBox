@@ -16,6 +16,15 @@ extension Date {
         return formatter.localizedString(for: self, relativeTo: Date())
     }
     
+    public func formatted(date: DateFormatter.Style, time: DateFormatter.Style) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = date
+        formatter.timeStyle = time
+        formatter.locale = Locale.preferred
+        
+        return formatter.string(from: self)
+    }
+    
     public init?(dateString: String) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd"
@@ -23,7 +32,7 @@ extension Date {
         self = date
     }
     
-    public static var locaizedZero: Date {
+    public static var localizedZero: Date {
         Date(timeIntervalSince1970: 24 * 3600).startOfDay
     }
     
@@ -52,17 +61,5 @@ extension Date {
     
     public static var endOfToday: Date {
         Date().endOfDay
-    }
-    
-    public func expiresIn(days: Int) -> Bool {
-        !expired && Date.endOfToday.distance(to: self.addingTimeInterval(1)) < TimeInterval(3600 * 24 * days)
-    }
-    
-    public var expired: Bool {
-        Date.endOfToday.distance(to: self.addingTimeInterval(1)) <= 0
-    }
-    
-    public func expiredOrExpiresIn(days: Int) -> Bool {
-        expired || expiresIn(days: days)
     }
 }

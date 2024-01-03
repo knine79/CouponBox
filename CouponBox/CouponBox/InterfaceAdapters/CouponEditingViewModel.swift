@@ -5,7 +5,7 @@
 //  Created by Samuel Kim on 10/6/23.
 //
 
-import Foundation
+import CouponBox_BusinessRules
 
 public final class CouponEditingViewModel: ObservableObject {
     @Published public var imageData: Data?
@@ -19,7 +19,21 @@ public final class CouponEditingViewModel: ObservableObject {
     @Published public var canDone: Bool = false
     @Published public var alreadyExistWarningDisplayed: Bool = false
     
-    var toVO: Coupon {
+    var expired = false
+    var expirationDescription = ""
+    var expiredOrDueToExpire = false
+    
+    func toCoupon() -> Coupon {
         Coupon(name: name, shop: shop, expiresAt: expiresAt, code: barcode, imageData: imageData ?? Data())
+    }
+}
+
+extension CouponEditingViewModel: Equatable {
+    public static func == (lhs: CouponEditingViewModel, rhs: CouponEditingViewModel) -> Bool {
+        lhs.imageData == rhs.imageData
+        && lhs.name == rhs.name
+        && lhs.shop == rhs.shop
+        && lhs.expiresAt == rhs.expiresAt
+        && lhs.barcode == rhs.barcode
     }
 }

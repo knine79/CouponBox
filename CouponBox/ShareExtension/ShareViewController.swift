@@ -33,11 +33,13 @@ class ShareNavigationController: UIViewController {
                                     DispatchQueue.main.async { [weak self] in
                                         guard let self else { return }
                                         
+                                        let presenter = CouponEditingViewPresenter()
                                         useCase = UseCaseFactory.create()
-                                            .createCouponEditingUseCase(couponImageData: data) { [weak self] _ in
+                                            .createCouponEditingUseCase(presenter: presenter, couponImageData: data) { [weak self] _ in
                                                 self?.completeShareExtension()
                                             }
-                                        let editingView = CouponEditingView(presenter: useCase, controller: useCase)
+                                        let controller = CouponEditingViewController(couponEditingUseCase: useCase)
+                                        let editingView = CouponEditingView(viewModel: presenter.viewModel, controller: controller)
                                         
                                         let hostingController = UIHostingController(rootView: editingView)
                                         addChild(hostingController)

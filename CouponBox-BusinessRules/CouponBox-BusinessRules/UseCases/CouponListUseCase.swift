@@ -8,25 +8,25 @@
 import Foundation
 import Combine
 
-public protocol CouponListPresentable {
-    var viewModel: CouponListViewModel { get }
-}
-
-public protocol CouponListControllable {
+public protocol CouponListUseCaseInputProtocol {
     func fetchCouponList()
     func removeCoupon(code: String)
-    func loadExpirationNotificationTime()
-    func saveExpirationNotificationTime()
 }
 
-public final class CouponListUseCase: CouponListPresentable, CouponListControllable {
+public protocol CouponListUseCaseOutputProtocol {
+    func presentCouponList(expiredCoupons: [Coupon], dueToExpireCoupons: [Coupon], restCoupons: [Coupon])
+    func presentProgress(isLoading: Bool)
+}
+
+public final class CouponListUseCase: CouponListUseCaseInputProtocol {
+    private let presenter: CouponListUseCaseOutputProtocol?
     private let repository: RepositoryContainerProtocol
     private let store: DataStorable
     
-    public var viewModel = CouponListViewModel()
     private var cancellables = Set<AnyCancellable>()
 
-    init(repository: RepositoryContainerProtocol, store: DataStorable) {
+    init(presenter: CouponListUseCaseOutputProtocol?, repository: RepositoryContainerProtocol, store: DataStorable) {
+        self.presenter = presenter
         self.repository = repository
         self.store = store
         
@@ -35,31 +35,28 @@ public final class CouponListUseCase: CouponListPresentable, CouponListControlla
     
     private func setupTrigger() {
         guard Thread.isMainThread else { return }
+        
         store.valuePublisher(key: .couponList, typeOf: [Coupon].self)
             .sink { [weak self] in
                 let coupons = $0 ?? []
-                self?.viewModel.isEmpty = coupons.isEmpty
-                self?.viewModel.notSoonToExpireCoupons = coupons.filter {
-                    !($0.expiresAt.expired || $0.expiresAt.expiresIn(days: 7))
-                }
-                self?.viewModel.soonToExpireCoupons = coupons.filter {
-                    $0.expiresAt.expiresIn(days: 7)
-                }
-                self?.viewModel.expiredCoupons = coupons.filter {
-                    $0.expiresAt.expired
-                }
-                self?.viewModel.loading = false
-            }.store(in: &cancellables)
-        
-        store.valuePublisher(key: .expirationNotificationTime, typeOf: TimeInterval.self)
-            .sink { [weak self] in
-                self?.viewModel.notificationTime = Date.locaizedZero.addingTimeInterval($0 ?? 7 * 3600)
+                self?.presenter?.presentCouponList(
+                    expiredCoupons: coupons.filter {
+                        $0.expired
+                    },
+                    dueToExpireCoupons: coupons.filter {
+                        $0.dueToExpire
+                    },
+                    restCoupons: coupons.filter {
+                        !$0.expiredOrDueToExpire
+                    }
+                )
+                self?.presenter?.presentProgress(isLoading: false)
             }.store(in: &cancellables)
     }
     
     public func fetchCouponList() {
         if Thread.isMainThread {
-            viewModel.loading = true
+            presenter?.presentProgress(isLoading: true)
         }
         if let coupons = try? repository.couponList.fetchCouponList() {
             store.update(key: .couponList, value: coupons)
@@ -73,15 +70,5 @@ public final class CouponListUseCase: CouponListPresentable, CouponListControlla
             value.removeAll(where: { $0.code == code})
             return value
         }
-    }
-    
-    public func loadExpirationNotificationTime() {
-        store.update(key: .expirationNotificationTime, value: repository.settings.loadExpirationNotificationTime())
-    }
-    
-    public func saveExpirationNotificationTime() {
-        let timeInterval = Date.locaizedZero.distance(to: viewModel.notificationTime)
-        store.update(key: .expirationNotificationTime, value: timeInterval)
-        repository.settings.saveExpirationNotificationTime(timeInterval)
     }
 }

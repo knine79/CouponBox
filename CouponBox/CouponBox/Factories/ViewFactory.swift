@@ -23,23 +23,34 @@ public final class ViewFactory: ObservableObject {
     }
     
     func createCouponListView() -> CouponListView {
-        let useCase = dependencies.useCaseFactory.createCouponListUseCase()
-        return CouponListView(presenter: useCase, controller: useCase)
+        let presenter = CouponListViewPresenter()
+        let couponListUseCase = dependencies.useCaseFactory.createCouponListUseCase(presenter: presenter)
+        let couponExpirationNotificationUseCase = dependencies.useCaseFactory.createCouponExpirationNotificationUseCase(presenter: presenter)
+        let controller = CouponListViewController(
+            couponListUseCase: couponListUseCase,
+            couponExpirationNotificationUseCase: couponExpirationNotificationUseCase
+        )
+        return CouponListView(viewModel: presenter.viewModel, controller: controller)
     }
     
-    func createCouponDetailView(coupon: Coupon) -> CouponDetailView {
+    func createCouponDetailView(coupon: CouponViewModel) -> CouponDetailView {
         let useCase = dependencies.useCaseFactory.createScreenBrightnessUseCase()
-        return CouponDetailView(coupon: coupon, screenBrightnessController: useCase)
+        let controller = CouponDetailViewController(screenBrightnessUseCase: useCase)
+        return CouponDetailView(viewModel: coupon, controller: controller)
     }
     
     func createCouponEditingView(couponImageData: Data, completionHandler: @escaping (_ isDone: Bool) -> Void = { _ in }) -> CouponEditingView {
-        let useCase = dependencies.useCaseFactory.createCouponEditingUseCase(couponImageData: couponImageData, completionHandler: completionHandler)
-        return CouponEditingView(presenter: useCase, controller: useCase)
+        let presenter = CouponEditingViewPresenter()
+        let useCase = dependencies.useCaseFactory.createCouponEditingUseCase(presenter: presenter, couponImageData: couponImageData, completionHandler: completionHandler)
+        let controller = CouponEditingViewController(couponEditingUseCase: useCase)
+        return CouponEditingView(viewModel: presenter.viewModel, controller: controller)
     }
     
     func createCouponEditingView(couponCode: String) -> CouponEditingView {
-        let useCase = dependencies.useCaseFactory.createCouponEditingUseCase(couponCode: couponCode)
-        return CouponEditingView(presenter: useCase, controller: useCase)
+        let presenter = CouponEditingViewPresenter()
+        let useCase = dependencies.useCaseFactory.createCouponEditingUseCase(presenter: presenter, couponCode: couponCode)
+        let controller = CouponEditingViewController(couponEditingUseCase: useCase)
+        return CouponEditingView(viewModel: presenter.viewModel, controller: controller)
     }
 }
 

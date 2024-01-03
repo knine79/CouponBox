@@ -8,17 +8,23 @@
 import Foundation
 import Combine
 
-public protocol CouponEditingPresentable {
-    var viewModel: CouponEditingViewModel { get }
+public protocol CouponEditingUseCaseOutputProtocol {
+    func presentCouponData(_ data: Coupon)
+    func presentRecognizedTexts(_ texts: [String])
+    func presentDoneButton(canDone: Bool)
+    func presentProgress(isLoading: Bool)
+    func presentAlreadyExistWarning(_ show: Bool)
+    func presentCouponValidation(_ coupon: Coupon)
 }
 
-public protocol CouponEditingControllable {
-    func viewDidAppear()
-    func cancelButtonDidTap()
-    func doneButtonDidTap()
+public protocol CouponEditingUseCaseInputProtocol {
+    func loadView()
+    func edit(_ data: Coupon)
+    func cancel()
+    func save()
 }
 
-public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditingControllable {
+public final class CouponEditingUseCase: CouponEditingUseCaseInputProtocol {
     enum EditingMode {
         case add, update
     }
@@ -26,22 +32,30 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
     private let couponImageData: Data?
     private let couponCode: String?
     private let completionHandler: (_ isDone: Bool) -> Void
+    private let presenter: CouponEditingUseCaseOutputProtocol?
     private let repository: RepositoryContainerProtocol
     private let store: DataStorable
     private let imageAnalyzer: ImageAnalyzable
     
+    private var couponData: Coupon?
     private let mode: EditingMode
     private var dirty = CurrentValueSubject<Bool, Never>(false)
     
-    public var viewModel = CouponEditingViewModel()
     private var cancellables = Set<AnyCancellable>()
     
-    init(couponImageData: Data, completionHandler: @escaping (_ isDone: Bool) -> Void = { _ in }, repository: RepositoryContainerProtocol, store: DataStorable, imageAnalyzer: ImageAnalyzable) {
+    init(presenter: CouponEditingUseCaseOutputProtocol?,
+         repository: RepositoryContainerProtocol,
+         store: DataStorable,
+         imageAnalyzer: ImageAnalyzable,
+         couponImageData: Data,
+         completionHandler: @escaping (_ isDone: Bool) -> Void = { _ in }) 
+    {
         self.couponImageData = couponImageData
         self.completionHandler = completionHandler
         self.couponCode = nil
         self.mode = .add
         
+        self.presenter = presenter
         self.repository = repository
         self.store = store
         self.imageAnalyzer = imageAnalyzer
@@ -49,12 +63,18 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
         setupTriggers()
     }
     
-    init(couponCode: String, repository: RepositoryContainerProtocol, store: DataStorable, imageAnalyzer: ImageAnalyzable) {
+    init(presenter: CouponEditingUseCaseOutputProtocol?, 
+         repository: RepositoryContainerProtocol,
+         store: DataStorable,
+         imageAnalyzer: ImageAnalyzable,
+         couponCode: String) 
+    {
         self.couponImageData = nil
         self.completionHandler = { _ in }
         self.couponCode = couponCode
         self.mode = .update
         
+        self.presenter = presenter
         self.repository = repository
         self.store = store
         self.imageAnalyzer = imageAnalyzer
@@ -63,94 +83,78 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
     }
     
     private func setupTriggers() {
-        Publishers.CombineLatest(
-            Publishers.CombineLatest3(viewModel.$barcode.removeDuplicates(),
-                                      viewModel.$name.removeDuplicates(),
-                                      viewModel.$shop.removeDuplicates()),
-            Publishers.CombineLatest(viewModel.$expiresAt,
-                                     viewModel.$imageData.removeDuplicates())
-        )
-        .sink { [weak self] _, _ in
-            self?.dirty.send(true)
-        }.store(in: &cancellables)
-        
-        dirty.debounce(for: .seconds(0.2), scheduler: RunLoop.main)
+        dirty.filter { $0 }
+            .debounce(for: .seconds(0.2), scheduler: RunLoop.main)
             .sink { [weak self] _ in
-                guard let self else { return }
-                viewModel.canDone = canDone == true
-                viewModel.alreadyExistWarningDisplayed = mode == .add && isExistCoupon(code: viewModel.barcode)
-            }.store(in: &cancellables)
-    }
-    
-    public func viewDidAppear() {
-        if let couponImageData {
-            couponImageDidInput(imageData: couponImageData)
-        } else if let couponCode {
-            let item = try? repository.couponList.fetchCoupon(code: couponCode)
-            viewModel.imageData = item?.imageData ?? Data()
-            viewModel.barcode = item?.code ?? ""
-            viewModel.name = item?.name ?? ""
-            viewModel.shop = item?.shop ?? ""
-            viewModel.expiresAt = item?.expiresAt ?? .endOfToday
-            if let imageData = item?.imageData {
-                viewModel.loading = true
-                imageAnalyzer.recognizeText(from: imageData) { [weak self] texts in
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self else { return }
-                        viewModel.recognizedTexts = []
-                        texts.forEach { [weak self] in
-                            if $0.detectedDates.isEmpty {
-                                self?.viewModel.recognizedTexts.append($0)
-                            }
-                        }
-                        viewModel.recognizedTexts = viewModel.recognizedTexts.duplicateRemoved(hasKeyProvider: { $0.hashValue })
-                        viewModel.loading = false
-                    }
-                }
+                guard let self, let couponData = couponData else { return }
+                presenter?.presentDoneButton(canDone: canDone)
+                presenter?.presentCouponValidation(couponData)
+                presenter?.presentAlreadyExistWarning(mode == .add && isExistCoupon(code: couponData.code))
             }
+            .store(in: &cancellables)
+    }
+    
+    public func loadView() {
+        if let couponImageData {
+            loadViewFromImage(couponImageData)
+        } else if let couponCode {
+            loadViewFromCouponCode(couponCode)
         }
-        dirty.send(false)
     }
     
-    public func cancelButtonDidTap() {
+    public func edit(_ data: Coupon) {
+        dirty.send(true)
+        couponData = data
+    }
+    
+    public func cancel() {
         completionHandler(false)
+        dirty.send(false)
+        couponData = nil
     }
     
-    public func doneButtonDidTap() {
+    public func save() {
         saveCoupon()
         completionHandler(true)
+        dirty.send(false)
+        couponData = nil
     }
     
     private func saveCoupon() {
-        let item = viewModel.toVO
-        if (try? repository.couponList.isExistCoupon(code: item.code)) == true {
-            try? repository.couponList.updateCoupon(item)
+        guard let couponData else { return }
+        if (try? repository.couponList.isExistCoupon(code: couponData.code)) == true {
+            try? repository.couponList.updateCoupon(couponData)
             store.patch(key: .couponList) {
                 var value: [Coupon] = $0 ?? []
-                value.removeAll(where: { $0.code == item.code })
-                value.append(item)
+                value.removeAll(where: { $0.code == couponData.code })
+                value.append(couponData)
                 return value
             }
         } else {
-            try? repository.couponList.addCoupon(item)
+            try? repository.couponList.addCoupon(couponData)
             store.patch(key: .couponList) {
                 var value: [Coupon] = $0 ?? []
-                value.append(item)
+                value.append(couponData)
                 return value
             }
         }
     }
     
-    private func couponImageDidInput(imageData: Data) {
-        viewModel.imageData = imageData
-        viewModel.loading = true
+    private func loadViewFromImage(_ imageData: Data) {
+        
+        var code = ""
+        var expiresAt = Date()
+        var name = ""
+        var shop = ""
+        
+        presenter?.presentProgress(isLoading: true)
         let dispatchGroup = DispatchGroup()
         
         DispatchQueue.global(qos: .userInitiated).async {
             dispatchGroup.enter()
-            self.imageAnalyzer.recognizeBarcode(from: imageData) { [weak self] barcode in
+            self.imageAnalyzer.recognizeBarcode(from: imageData) { barcode in
                 DispatchQueue.main.sync {
-                    self?.viewModel.barcode = barcode.first ?? ""
+                    code = barcode.first ?? ""
                     dispatchGroup.leave()
                 }
             }
@@ -161,20 +165,21 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
             self.imageAnalyzer.recognizeText(from: imageData) { [weak self] texts in
                 DispatchQueue.main.sync { [weak self] in
                     guard let self else { return }
-                    viewModel.recognizedTexts = []
+                    var recognizedTexts = [String]()
                     var allDetectedDates: [Date] = []
-                    texts.forEach { [weak self] in
+                    texts.forEach {
                         let detectedDates = $0.detectedDates
                         if detectedDates.isEmpty {
-                            self?.viewModel.recognizedTexts.append($0)
+                            recognizedTexts.append($0)
                         } else {
                             allDetectedDates.append(contentsOf: detectedDates.map(\.endOfDay))
                         }
                     }
-                    viewModel.expiresAt = allDetectedDates.sorted().last ?? Date()
-                    viewModel.recognizedTexts = viewModel.recognizedTexts.duplicateRemoved(hasKeyProvider: { $0.hashValue })
-                    viewModel.name = viewModel.recognizedTexts.dropFirst().first ?? ""
-                    viewModel.shop = viewModel.recognizedTexts.first ?? ""
+                    recognizedTexts = recognizedTexts.duplicateRemoved(hasKeyProvider: { $0.hashValue })
+                    presenter?.presentRecognizedTexts(recognizedTexts)
+                    expiresAt = allDetectedDates.sorted().last ?? Date()
+                    name = recognizedTexts.dropFirst().first ?? ""
+                    shop = recognizedTexts.first ?? ""
                     dispatchGroup.leave()
                 }
             }
@@ -183,17 +188,46 @@ public final class CouponEditingUseCase: CouponEditingPresentable, CouponEditing
         DispatchQueue.global(qos: .userInitiated).async {
             dispatchGroup.wait()
             DispatchQueue.main.sync {
-                self.viewModel.loading = false
+                self.couponData = Coupon(name: name, shop: shop, expiresAt: expiresAt, code: code, imageData: imageData)
+                self.presenter?.presentCouponData(self.couponData!)
+                self.presenter?.presentCouponValidation(self.couponData!)
+                self.presenter?.presentProgress(isLoading: false)
+            }
+        }
+    }
+    
+    private func loadViewFromCouponCode(_ couponCode: String) {
+        guard let item = try? repository.couponList.fetchCoupon(code: couponCode) else { return }
+        couponData = item
+        presenter?.presentCouponData(item)
+        presenter?.presentCouponValidation(item)
+        prepareTextCandidates(from: item.imageData)
+    }
+    
+    private func prepareTextCandidates(from image: Data) {
+        presenter?.presentProgress(isLoading: true)
+        imageAnalyzer.recognizeText(from: image) { [weak self] texts in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                var recognizedTexts = [String]()
+                texts.forEach {
+                    if $0.detectedDates.isEmpty {
+                        recognizedTexts.append($0)
+                    }
+                }
+                recognizedTexts = recognizedTexts.duplicateRemoved(hasKeyProvider: { $0.hashValue })
+                presenter?.presentRecognizedTexts(recognizedTexts)
+                presenter?.presentProgress(isLoading: false)
             }
         }
     }
     
     private var canDone: Bool {
-        !viewModel.barcode.isEmpty
-        && !viewModel.name.isEmpty
-        && !viewModel.expiresAt.expired
-        && viewModel.imageData != nil
-        && ((mode == .add && !isExistCoupon(code: viewModel.barcode)) || mode == .update && dirty.value)
+        guard let couponData else { return false }
+        return !couponData.code.isEmpty
+        && !couponData.name.isEmpty
+        && !couponData.expired
+        && ((mode == .add && !isExistCoupon(code: couponData.code)) || mode == .update && dirty.value)
     }
     
     private func isExistCoupon(code: String) -> Bool {

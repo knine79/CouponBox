@@ -29,34 +29,42 @@ public final class UseCaseFactory {
         self.dependencies = dependencies
     }
     
-    public func createCouponListUseCase() -> CouponListUseCase {
-        CouponListUseCase(repository: dependencies.repositoryContainer, store: dependencies.store)
+    public func createCouponListUseCase(presenter: CouponListUseCaseOutputProtocol? = nil) -> CouponListUseCase {
+        CouponListUseCase(presenter: presenter, repository: dependencies.repositoryContainer, store: dependencies.store)
     }
     
     public func createScreenBrightnessUseCase() -> ScreenBrightnessUseCase {
         ScreenBrightnessUseCase(store: dependencies.store, screenController: dependencies.screenController)
     }
     
-    public func createCouponEditingUseCase(couponImageData: Data, completionHandler: @escaping (_ isDone: Bool) -> Void = { _ in }) -> CouponEditingUseCase {
+    public func createCouponEditingUseCase(presenter: CouponEditingUseCaseOutputProtocol? = nil, couponImageData: Data, completionHandler: @escaping (_ isDone: Bool) -> Void = { _ in }) -> CouponEditingUseCase {
         CouponEditingUseCase(
+            presenter: presenter,
+            repository: dependencies.repositoryContainer,
+            store: dependencies.store,
+            imageAnalyzer: dependencies.imageAnalyzer,
             couponImageData: couponImageData,
-            completionHandler: completionHandler,
-            repository: dependencies.repositoryContainer,
-            store: dependencies.store,
-            imageAnalyzer: dependencies.imageAnalyzer
+            completionHandler: completionHandler
         )
     }
     
-    public func createCouponEditingUseCase(couponCode: String) -> CouponEditingUseCase {
+    public func createCouponEditingUseCase(presenter: CouponEditingUseCaseOutputProtocol? = nil, couponCode: String) -> CouponEditingUseCase {
         CouponEditingUseCase(
-            couponCode: couponCode,
+            presenter: presenter,
             repository: dependencies.repositoryContainer,
             store: dependencies.store,
-            imageAnalyzer: dependencies.imageAnalyzer
+            imageAnalyzer: dependencies.imageAnalyzer,
+            couponCode: couponCode
         )
     }
     
-    public func createCouponExpirationNotificationUseCase() -> CouponExpirationNotificationUseCase {
-        CouponExpirationNotificationUseCase(store: dependencies.store, userNotificationCenter: dependencies.userNotificationCenter)
+    public func createCouponExpirationNotificationUseCase(presenter: CouponExpirationNotificationUseCaseOutputProtocol? = nil) -> CouponExpirationNotificationUseCase {
+        
+        CouponExpirationNotificationUseCase(
+            presenter: presenter,
+            repository: dependencies.repositoryContainer,
+            store: dependencies.store,
+            userNotificationCenter: dependencies.userNotificationCenter
+        )
     }
 }

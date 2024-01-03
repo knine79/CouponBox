@@ -7,16 +7,30 @@
 
 import SwiftUI
 import CouponBox_BusinessRules
+import Combine
 
 public struct CouponEditingView: View {
     @Environment(\.presentationMode) private var presentationMode
     @StateObject private var viewModel: CouponEditingViewModel
-    private let controller: CouponEditingControllable
+    private let controller: CouponEditingViewController?
     @State private var alertPresented = false
+    private var cancellables = Set<AnyCancellable>()
     
-    init(presenter: CouponEditingPresentable, controller: CouponEditingControllable) {
-        self._viewModel = StateObject(wrappedValue: presenter.viewModel)
+    init(viewModel: CouponEditingViewModel, controller: CouponEditingViewController? = nil) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
         self.controller = controller
+        
+        Publishers.MergeMany(
+            viewModel.$barcode.removeDuplicates().map { _ in }.eraseToAnyPublisher(),
+            viewModel.$expiresAt.removeDuplicates().map { _ in }.eraseToAnyPublisher(),
+            viewModel.$name.removeDuplicates().map { _ in }.eraseToAnyPublisher(),
+            viewModel.$shop.removeDuplicates().map { _ in }.eraseToAnyPublisher()
+        )
+        .receive(on: RunLoop.main)
+        .sink { [self, viewModel] _ in
+            self.controller?.couponDataDidChange(viewModel)
+        }
+        .store(in: &cancellables)
     }
     
     public var body: some View {
@@ -37,14 +51,14 @@ public struct CouponEditingView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("취소".locaized) {
                         presentationMode.wrappedValue.dismiss()
-                        controller.cancelButtonDidTap()
+                        controller?.cancelButtonDidTap()
                     }
                 }
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("완료".locaized) {
                         presentationMode.wrappedValue.dismiss()
-                        controller.doneButtonDidTap()
+                        controller?.doneButtonDidTap()
                     }
                     .disabled(!viewModel.canDone)
                 }
@@ -52,7 +66,7 @@ public struct CouponEditingView: View {
             .background(Color.background)
         }
         .onAppear(perform: {
-            controller.viewDidAppear()
+            controller?.viewDidAppear()
         })
     }
     
@@ -102,8 +116,8 @@ public struct CouponEditingView: View {
                     }
                 })
                 HStack(spacing: 0) {
-                    if viewModel.expiresAt.expiredOrExpiresIn(days: 7) && !viewModel.loading{
-                        Text(viewModel.expiresAt.expired ? "만료됨".locaized : "\(viewModel.expiresAt.relativeTime) \("만료".locaized)")
+                    if viewModel.expiredOrDueToExpire && !viewModel.loading {
+                        Text(viewModel.expirationDescription)
                             .foregroundStyle(Color.red)
                             .font(.caption)
                     }
@@ -129,18 +143,14 @@ public struct CouponEditingView: View {
 }
 
 #Preview {
-    let useCase = Stubs.useCaseFactory.createCouponEditingUseCase(couponImageData: UIImage(named: "sample")?.pngData() ?? Data())
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-        useCase.viewModel.alreadyExistWarningDisplayed = true
-        useCase.viewModel.canDone = false
-    }
-    return CouponEditingView(presenter: useCase, controller: useCase)
+    let viewModel = CouponEditingViewModel()
+    viewModel.alreadyExistWarningDisplayed = true
+    viewModel.canDone = false
+    return CouponEditingView(viewModel: viewModel)
 }
 
 #Preview {
-    let useCase = Stubs.useCaseFactory.createCouponEditingUseCase(couponImageData: UIImage(named: "sample")?.pngData() ?? Data())
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-        useCase.viewModel.loading = true
-    }
-    return CouponEditingView(presenter: useCase, controller: useCase)
+    let viewModel = CouponEditingViewModel()
+    viewModel.loading = true
+    return CouponEditingView(viewModel: viewModel)
 }
